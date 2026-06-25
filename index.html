@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -100,10 +101,16 @@ function verifier(){
 
 function suiteAventure(){
 
-    document.getElementById("resultat").innerHTML = `
-        🔒 <br><br>
-        Prochaine énigme disponible le<br>
-        <strong>dimanche 28 juin 2026</strong>
+    document.querySelector(".card").innerHTML = `
+        <div style="padding:60px 20px;">
+            <div style="font-size:80px;">🔒</div>
+
+            <h1>Prochaine énigme disponible le</h1>
+
+            <h2 style="color:#ff6b81; font-size:40px;">
+                dimanche 28 juin 2026
+            </h2>
+        </div>
     `;
 
 }
@@ -112,3 +119,4 @@ function suiteAventure(){
 
 </body>
 </html>
+```
