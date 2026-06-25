@@ -62,7 +62,7 @@ button:hover{
 <h1>🔎 Chasse au trésor de Malika</h1>
 
 <p>
-Hola Malika<br>
+Hola Malika ❤️<br>
 Rentre ici le code
 </p>
 
@@ -80,14 +80,31 @@ Rentre ici le code
 
 function verifier(){
 
-let code = document.getElementById("code").value.toLowerCase();
+    let code = document.getElementById("code").value.toLowerCase().trim();
 
-if(code=="clef"){
-    document.getElementById("resultat").innerHTML="🎉 Bravo ❤️, tu as gagné le droit d'ouvrir le cadeau du sac poubelle dans ta chambre";
+    if(code=="clef"){
+        document.getElementById("resultat").innerHTML = `
+            🎉 Bravo ❤️<br><br>
+            Tu as gagné le droit d'ouvrir le cadeau du sac poubelle dans ta chambre !
+            <br><br>
+            <button onclick="suiteAventure()">
+                Continuer l'aventure ➜
+            </button>
+        `;
+    }
+    else{
+        document.getElementById("resultat").innerHTML = "❌ Essaie encore";
+    }
+
 }
-else{
-    document.getElementById("resultat").innerHTML="❌ Try again";
-}
+
+function suiteAventure(){
+
+    document.getElementById("resultat").innerHTML = `
+        🔒 <br><br>
+        Prochaine énigme disponible le<br>
+        <strong>dimanche 28 juin 2026</strong>
+    `;
 
 }
 
