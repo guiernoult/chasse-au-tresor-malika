@@ -5,11 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chasse au trésor de Malika — Énigme 2</title>
 <style>
-<style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 
   body {
     font-family: 'Inter', sans-serif;
@@ -305,9 +303,16 @@
   });
 
   const CODE = 'BAINIFA';
-  let indicesRestants = 3;
+  const STORAGE_KEY = 'enigme2_indices';
+
+  // Charger les indices depuis localStorage, sinon 3 par défaut
+  let indicesRestants = parseInt(localStorage.getItem(STORAGE_KEY) ?? '3', 10);
   let dernierNbErreurs = 0;
   let indiceUtiliseCeEssai = false;
+
+  function sauvegarderIndices() {
+    localStorage.setItem(STORAGE_KEY, indicesRestants);
+  }
 
   function verifier() {
     const inputs = Array.from({length: 7}, (_, i) => document.getElementById('l' + i));
@@ -357,6 +362,7 @@
     if (indicesRestants <= 0 || indiceUtiliseCeEssai) return;
 
     indicesRestants--;
+    sauvegarderIndices(); // 💾 on sauvegarde immédiatement
     indiceUtiliseCeEssai = true;
 
     const reveal = document.getElementById('indiceReveal');
@@ -372,11 +378,12 @@
   }
 
   function showSuccess() {
+    localStorage.removeItem(STORAGE_KEY); // on remet à zéro si elle a réussi
     document.getElementById('mainCard').innerHTML = `
       <div class="success-screen">
         <span class="gift-box">🎁</span>
         <h2>Bravo Malika ❤️</h2>
-        <p>Tu peux ouvrir l'<strong>enveloppe dans le dernier tiroir de table de chevet qui continent l'annotation F</strong> qui t'attend !<br>Pour te récompenser après ce long VD.</p>
+        <p>Tu peux ouvrir l'<strong>enveloppe dans le dernier tiroir de table de chevet qui continent l'annotation "F"</strong> !<br>Pour te réconforter après ce long VD.</p>
         <button class="continuer" onclick="showNext()">La suite de l'aventure ✦</button>
       </div>
     `;
