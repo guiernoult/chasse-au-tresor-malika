@@ -1,121 +1,360 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Chasse au trésor de Malika</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chasse au trésor de Malika — Énigme 2</title>
 <style>
-body{
-    font-family: Arial, sans-serif;
-    text-align:center;
-    margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background: linear-gradient(135deg, #ffdde1, #ee9ca7);
-}
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500&display=swap');
 
-.card{
-    background:white;
-    padding:40px;
-    border-radius:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.2);
-    width:80%;
-    max-width:500px;
-}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-input{
-    padding:10px;
-    font-size:18px;
-    width:80%;
-    margin-top:10px;
-}
+  body {
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    background: #1a0a0f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow: hidden;
+    position: relative;
+  }
 
-button{
-    padding:10px 20px;
-    font-size:18px;
-    margin-top:15px;
-    cursor:pointer;
-    border:none;
-    border-radius:10px;
-    background:#ff6b81;
-    color:white;
-}
+  /* Ambient floating hearts */
+  .hearts-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .heart {
+    position: absolute;
+    font-size: 14px;
+    opacity: 0;
+    animation: floatUp linear infinite;
+    color: #ff6b81;
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(100vh) scale(0.5); opacity: 0; }
+    10%  { opacity: 0.3; }
+    90%  { opacity: 0.15; }
+    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+  }
 
-button:hover{
-    background:#ff4d6d;
-}
+  .card {
+    position: relative;
+    z-index: 1;
+    background: #fff8f9;
+    border-radius: 24px;
+    padding: 48px 40px 40px;
+    width: 100%;
+    max-width: 580px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,107,129,0.15);
+  }
 
-#resultat{
-    margin-top:30px;
-    font-size:25px;
-    font-weight:bold;
-}
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #ff6b81;
+    background: #fff0f2;
+    border: 1px solid #ffd6dc;
+    border-radius: 99px;
+    padding: 4px 14px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: #1a0a0f;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: #999;
+    font-style: italic;
+    margin-bottom: 28px;
+  }
+
+  .enigme-box {
+    background: #fff;
+    border: 1px solid #f0dde0;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 28px;
+    text-align: left;
+  }
+
+  .enigme-box p {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #3a2030;
+  }
+
+  .enigme-box p strong {
+    color: #cc3355;
+  }
+
+  .input-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .letter-inputs {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .letter-input {
+    width: 40px;
+    height: 52px;
+    border: 2px solid #f0dde0;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    color: #1a0a0f;
+    background: #fff;
+    text-transform: uppercase;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  .letter-input:focus {
+    border-color: #ff6b81;
+    box-shadow: 0 0 0 3px rgba(255,107,129,0.15);
+  }
+
+  .letter-input.correct { border-color: #4caf50; background: #f0fff4; }
+  .letter-input.wrong   { border-color: #ff4d6d; background: #fff5f7; }
+
+  button.valider {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ff6b81, #cc3355);
+    color: white;
+    letter-spacing: 0.03em;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+  button.valider:hover  { opacity: 0.9; }
+  button.valider:active { transform: scale(0.98); }
+
+  #resultat {
+    margin-top: 20px;
+    font-size: 15px;
+    min-height: 28px;
+    font-weight: 500;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  #resultat.success { color: #2e7d32; }
+  #resultat.error   { color: #c62828; }
+
+  /* Success screen */
+  .success-screen {
+    text-align: center;
+    padding: 20px 0;
+  }
+  .success-screen .emoji-big { font-size: 64px; margin-bottom: 16px; }
+  .success-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: #1a0a0f;
+    margin-bottom: 12px;
+  }
+  .success-screen p {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  .success-screen .gift-box {
+    font-size: 80px;
+    animation: bounce 1s ease infinite alternate;
+    display: block;
+    margin-bottom: 12px;
+  }
+  @keyframes bounce {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-12px); }
+  }
+  button.continuer {
+    padding: 13px 28px;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ff6b81, #cc3355);
+    color: white;
+    transition: opacity 0.2s;
+  }
+  button.continuer:hover { opacity: 0.9; }
+
+  /* Next enigme screen */
+  .next-screen {
+    text-align: center;
+    padding: 20px 0;
+  }
+  .next-screen .lock { font-size: 72px; margin-bottom: 20px; display: block; }
+  .next-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: #1a0a0f;
+    margin-bottom: 10px;
+  }
+  .next-screen .date {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: #cc3355;
+    font-weight: 700;
+    margin-top: 10px;
+  }
+  .next-screen p { font-size: 14px; color: #888; margin-top: 10px; }
 </style>
 </head>
-
 <body>
 
-<div class="card">
+<div class="hearts-bg" id="heartsBg"></div>
 
-<h1>🔎 Chasse au trésor de Malika</h1>
+<div class="card" id="mainCard">
+  <div class="badge">✦ Énigme n°2</div>
+  <h1>De ville en ville…</h1>
+  <p class="subtitle">Trouve le code à 7 lettres qui se cache dans vos souvenirs</p>
 
-<p>
-Hola Malika ❤️<br>
-Rentre ici le code
-</p>
+  <div class="enigme-box">
+    <p>
+      <strong>Mon 1er</strong> correspond à la première lettre de la ville où Éloïse s'est fait attaquer par un cheval.<br><br>
+      <strong>Mon 2ème</strong> correspond à la deuxième lettre de la ville où Guillaume s'est fait attaquer par un cheval.<br><br>
+      <strong>Mon 3ème</strong> correspond à la dernière lettre du jour où nous avons embarqué pour Quiberon.<br><br>
+      <strong>Mon 4ème</strong> correspond au nombre de villes dans lesquelles tu as habitée (plus de 3 mois) + le nombre de villes dans lesquelles j'ai habité (plus de 3 mois) depuis qu'on se connaît → prends la première lettre de ce nombre.<br><br>
+      <strong>Mon 5ème</strong> correspond au nombre de pays où nous sommes allés ensemble → prends la deuxième lettre de ce nombre.<br><br>
+      <strong>Mon 6ème</strong> correspond à la première lettre du moyen de transport que nous avons pris pour notre premier long voyage à deux (plus de 5h).<br><br>
+      <strong>Mon 7ème</strong> correspond à la deuxième lettre du mois où tu aurais pu venir chez ma famille pour la toute première fois.
+    </p>
+  </div>
 
-<input id="code" placeholder="Ta réponse...">
+  <div class="letter-inputs" id="letterInputs">
+    <input class="letter-input" maxlength="1" id="l0" />
+    <input class="letter-input" maxlength="1" id="l1" />
+    <input class="letter-input" maxlength="1" id="l2" />
+    <input class="letter-input" maxlength="1" id="l3" />
+    <input class="letter-input" maxlength="1" id="l4" />
+    <input class="letter-input" maxlength="1" id="l5" />
+    <input class="letter-input" maxlength="1" id="l6" />
+  </div>
 
-<br>
-
-<button onclick="verifier()">Valider</button>
-
-<div id="resultat"></div>
-
+  <button class="valider" onclick="verifier()">Valider ✦</button>
+  <div id="resultat"></div>
 </div>
 
 <script>
+  // Floating hearts
+  const bg = document.getElementById('heartsBg');
+  for (let i = 0; i < 18; i++) {
+    const h = document.createElement('div');
+    h.className = 'heart';
+    h.textContent = ['♥','❤','♡'][Math.floor(Math.random()*3)];
+    h.style.left = Math.random() * 100 + 'vw';
+    h.style.animationDuration = (8 + Math.random() * 12) + 's';
+    h.style.animationDelay = (Math.random() * 12) + 's';
+    h.style.fontSize = (10 + Math.random() * 16) + 'px';
+    bg.appendChild(h);
+  }
 
-function verifier(){
+  // Auto-advance between letter inputs
+  document.querySelectorAll('.letter-input').forEach((input, i, arr) => {
+    input.addEventListener('input', () => {
+      input.value = input.value.toUpperCase().replace(/[^A-Z]/g,'');
+      if (input.value && i < arr.length - 1) arr[i+1].focus();
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !input.value && i > 0) arr[i-1].focus();
+    });
+  });
 
-    let code = document.getElementById("code").value.toLowerCase().trim();
+  const CODE = 'BAINIFA';
 
-    if(code=="clef"){
-        document.getElementById("resultat").innerHTML = `
-            🎉 Bravo ❤️<br><br>
-            Tu as gagné le droit d'ouvrir le cadeau du sac poubelle dans ta chambre !
-            <br><br>
-            <button onclick="suiteAventure()">
-                Continuer l'aventure ➜
-            </button>
-        `;
+  function getCode() {
+    return Array.from({length: 7}, (_, i) =>
+      (document.getElementById('l' + i).value || '').toUpperCase()
+    ).join('');
+  }
+
+  function verifier() {
+    const inputs = Array.from({length: 7}, (_, i) => document.getElementById('l' + i));
+    const entered = inputs.map(i => i.value.toUpperCase());
+    const code = entered.join('');
+    const res = document.getElementById('resultat');
+
+    // Color each letter
+    inputs.forEach((inp, i) => {
+      inp.classList.remove('correct', 'wrong');
+      if (entered[i] === CODE[i]) inp.classList.add('correct');
+      else if (entered[i]) inp.classList.add('wrong');
+    });
+
+    if (code === CODE) {
+      setTimeout(showSuccess, 400);
+      return;
     }
-    else{
-        document.getElementById("resultat").innerHTML = "❌ Essaie encore";
+
+    // Count errors vs CODE
+    const errors = entered.filter((c, i) => c !== CODE[i] && c !== '').length;
+    const missing = entered.filter(c => c === '').length;
+
+    if (missing > 0) {
+      res.className = 'error';
+      res.textContent = '❌ Il manque ' + missing + ' lettre' + (missing > 1 ? 's' : '') + ' !';
+    } else {
+      res.className = 'error';
+      res.textContent = errors === 1
+        ? '❌ 1 erreur — tu es toute proche !'
+        : `❌ ${errors} erreurs — cherche encore !`;
     }
+  }
 
-}
-
-function suiteAventure(){
-
-    document.querySelector(".card").innerHTML = `
-        <div style="padding:60px 20px;">
-            <div style="font-size:80px;">🔒</div>
-
-            <h1>Prochaine énigme disponible le</h1>
-
-            <h2 style="color:#ff6b81; font-size:40px;">
-                dimanche 28 juin 2026
-            </h2>
-        </div>
+  function showSuccess() {
+    document.getElementById('mainCard').innerHTML = `
+      <div class="success-screen">
+        <span class="gift-box">🎁</span>
+        <h2>Bravo Malika ❤️</h2>
+        <p>Tu peux ouvrir l' <strong>enveloppe du dernier tiroir de ta table de chevet</strong> qui est annotée d'un petit F !<br>Pour remonter ton moral après ce long VD.</p>
+        <button class="continuer" onclick="showNext()">La suite de l'aventure ✦</button>
+      </div>
     `;
+  }
 
-}
-
+  function showNext() {
+    document.getElementById('mainCard').innerHTML = `
+      <div class="next-screen">
+        <span class="lock">🔒</span>
+        <h2>La prochaine énigme sera disponible le</h2>
+        <div class="date">dimanche 5 juillet 2026</div>
+        <p>Patience… les meilleures choses valent la peine d'attendre ✦</p>
+      </div>
+    `;
+  }
 </script>
-
 </body>
 </html>
