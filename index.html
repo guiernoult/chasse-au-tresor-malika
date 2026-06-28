@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chasse au trésor de Malika — Énigme 2</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500&display=swap');
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500&display=swap');
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
+
+  body {
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
     background: #1a0a0f;
@@ -19,17 +21,11 @@ body {
     padding: 20px;
     overflow-y: auto;
     position: relative;
-}
-  /* Ambient floating hearts */
-  .hearts-bg {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
   }
+
+  .hearts-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
   .heart {
     position: absolute;
-    font-size: 14px;
     opacity: 0;
     animation: floatUp linear infinite;
     color: #ff6b81;
@@ -96,17 +92,7 @@ body {
     color: #3a2030;
   }
 
-  .enigme-box p strong {
-    color: #cc3355;
-  }
-
-  .input-row {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 16px;
-  }
+  .enigme-box p strong { color: #cc3355; }
 
   .letter-inputs {
     display: flex;
@@ -136,9 +122,6 @@ body {
     box-shadow: 0 0 0 3px rgba(255,107,129,0.15);
   }
 
-  .letter-input.correct { border-color: #4caf50; background: #f0fff4; }
-  .letter-input.wrong   { border-color: #ff4d6d; background: #fff5f7; }
-
   button.valider {
     width: 100%;
     padding: 14px;
@@ -157,45 +140,73 @@ body {
   button.valider:active { transform: scale(0.98); }
 
   #resultat {
-    margin-top: 20px;
-    font-size: 15px;
+    margin-top: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
     min-height: 28px;
+  }
+
+  .indice-zone {
+    margin-top: 16px;
+    text-align: center;
+  }
+
+  button.indice-btn {
+    padding: 10px 22px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
     font-weight: 500;
-    text-align: center;
-    transition: all 0.3s;
+    cursor: pointer;
+    border: 2px solid #cc3355;
+    border-radius: 10px;
+    background: transparent;
+    color: #cc3355;
+    transition: all 0.2s;
+  }
+  button.indice-btn:hover { background: #fff0f2; }
+  button.indice-btn:disabled {
+    border-color: #ccc;
+    color: #ccc;
+    cursor: not-allowed;
   }
 
-  #resultat.success { color: #2e7d32; }
-  #resultat.error   { color: #c62828; }
-
-  /* Success screen */
-  .success-screen {
-    text-align: center;
-    padding: 20px 0;
+  .indice-compteur {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 6px;
   }
-  .success-screen .emoji-big { font-size: 64px; margin-bottom: 16px; }
+
+  .indice-reveal {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #cc3355;
+    font-weight: 500;
+    background: #fff0f2;
+    border-radius: 10px;
+    padding: 10px 16px;
+    display: none;
+  }
+
+  .success-screen { text-align: center; padding: 20px 0; }
+  .success-screen .gift-box {
+    font-size: 80px;
+    animation: bounce 1s ease infinite alternate;
+    display: block;
+    margin-bottom: 16px;
+  }
+  @keyframes bounce {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-12px); }
+  }
   .success-screen h2 {
     font-family: 'Playfair Display', serif;
     font-size: 26px;
     color: #1a0a0f;
     margin-bottom: 12px;
   }
-  .success-screen p {
-    font-size: 15px;
-    color: #555;
-    line-height: 1.6;
-    margin-bottom: 28px;
-  }
-  .success-screen .gift-box {
-    font-size: 80px;
-    animation: bounce 1s ease infinite alternate;
-    display: block;
-    margin-bottom: 12px;
-  }
-  @keyframes bounce {
-    from { transform: translateY(0); }
-    to   { transform: translateY(-12px); }
-  }
+  .success-screen p { font-size: 15px; color: #555; line-height: 1.6; margin-bottom: 28px; }
+
   button.continuer {
     padding: 13px 28px;
     font-size: 15px;
@@ -210,11 +221,7 @@ body {
   }
   button.continuer:hover { opacity: 0.9; }
 
-  /* Next enigme screen */
-  .next-screen {
-    text-align: center;
-    padding: 20px 0;
-  }
+  .next-screen { text-align: center; padding: 20px 0; }
   .next-screen .lock { font-size: 72px; margin-bottom: 20px; display: block; }
   .next-screen h2 {
     font-family: 'Playfair Display', serif;
@@ -253,7 +260,7 @@ body {
     </p>
   </div>
 
-  <div class="letter-inputs" id="letterInputs">
+  <div class="letter-inputs">
     <input class="letter-input" maxlength="1" id="l0" />
     <input class="letter-input" maxlength="1" id="l1" />
     <input class="letter-input" maxlength="1" id="l2" />
@@ -264,11 +271,17 @@ body {
   </div>
 
   <button class="valider" onclick="verifier()">Valider ✦</button>
+
   <div id="resultat"></div>
+
+  <div class="indice-zone" id="indiceZone" style="display:none;">
+    <button class="indice-btn" id="indiceBtn" onclick="ouvrirIndice()">🔍 Utiliser un indice</button>
+    <div class="indice-compteur" id="indiceCompteur">3 indices restants</div>
+    <div class="indice-reveal" id="indiceReveal"></div>
+  </div>
 </div>
 
 <script>
-  // Floating hearts
   const bg = document.getElementById('heartsBg');
   for (let i = 0; i < 18; i++) {
     const h = document.createElement('div');
@@ -281,56 +294,81 @@ body {
     bg.appendChild(h);
   }
 
-  // Auto-advance between letter inputs
   document.querySelectorAll('.letter-input').forEach((input, i, arr) => {
     input.addEventListener('input', () => {
-      input.value = input.value.toUpperCase().replace(/[^A-Z]/g,'');
-      if (input.value && i < arr.length - 1) arr[i+1].focus();
+      input.value = input.value.toUpperCase().replace(/[^A-Z]/g, '');
+      if (input.value && i < arr.length - 1) arr[i + 1].focus();
     });
     input.addEventListener('keydown', (e) => {
-      if (e.key === 'Backspace' && !input.value && i > 0) arr[i-1].focus();
+      if (e.key === 'Backspace' && !input.value && i > 0) arr[i - 1].focus();
     });
   });
 
   const CODE = 'BAINIFA';
-
-  function getCode() {
-    return Array.from({length: 7}, (_, i) =>
-      (document.getElementById('l' + i).value || '').toUpperCase()
-    ).join('');
-  }
+  let indicesRestants = 3;
+  let dernierNbErreurs = 0;
+  let indiceUtiliseCeEssai = false;
 
   function verifier() {
     const inputs = Array.from({length: 7}, (_, i) => document.getElementById('l' + i));
-    const entered = inputs.map(i => i.value.toUpperCase());
+    const entered = inputs.map(inp => inp.value.toUpperCase());
     const code = entered.join('');
     const res = document.getElementById('resultat');
+    const indiceZone = document.getElementById('indiceZone');
+    const indiceReveal = document.getElementById('indiceReveal');
 
-    // Color each letter
-    inputs.forEach((inp, i) => {
-      inp.classList.remove('correct', 'wrong');
-      if (entered[i] === CODE[i]) inp.classList.add('correct');
-      else if (entered[i]) inp.classList.add('wrong');
-    });
+    indiceReveal.style.display = 'none';
+    indiceUtiliseCeEssai = false;
 
     if (code === CODE) {
-      setTimeout(showSuccess, 400);
+      setTimeout(showSuccess, 300);
       return;
     }
 
-    // Count errors vs CODE
-    const errors = entered.filter((c, i) => c !== CODE[i] && c !== '').length;
     const missing = entered.filter(c => c === '').length;
+    const errors = entered.filter((c, i) => c !== '' && c !== CODE[i]).length;
+    dernierNbErreurs = errors;
 
     if (missing > 0) {
-      res.className = 'error';
+      res.style.color = '#c62828';
       res.textContent = '❌ Il manque ' + missing + ' lettre' + (missing > 1 ? 's' : '') + ' !';
+      indiceZone.style.display = 'none';
     } else {
-      res.className = 'error';
-      res.textContent = errors === 1
-        ? '❌ 1 erreur — tu es toute proche !'
-        : `❌ ${errors} erreurs — cherche encore !`;
+      res.style.color = '#c62828';
+      res.textContent = "❌ Ce n'est pas ça…";
+      indiceZone.style.display = 'block';
+      majBoutonIndice();
     }
+  }
+
+  function majBoutonIndice() {
+    const btn = document.getElementById('indiceBtn');
+    const compteur = document.getElementById('indiceCompteur');
+    if (indicesRestants <= 0) {
+      btn.disabled = true;
+      compteur.textContent = "Plus d'indices disponibles";
+    } else {
+      btn.disabled = false;
+      compteur.textContent = indicesRestants + ' indice' + (indicesRestants > 1 ? 's' : '') + ' restant' + (indicesRestants > 1 ? 's' : '');
+    }
+  }
+
+  function ouvrirIndice() {
+    if (indicesRestants <= 0 || indiceUtiliseCeEssai) return;
+
+    indicesRestants--;
+    indiceUtiliseCeEssai = true;
+
+    const reveal = document.getElementById('indiceReveal');
+    const msg = dernierNbErreurs === 1
+      ? '💡 1 erreur dans ton code — tu brûles !'
+      : `💡 ${dernierNbErreurs} erreurs dans ton code — cherche encore !`;
+
+    reveal.textContent = msg;
+    reveal.style.display = 'block';
+
+    majBoutonIndice();
+    document.getElementById('indiceBtn').disabled = true;
   }
 
   function showSuccess() {
@@ -338,7 +376,7 @@ body {
       <div class="success-screen">
         <span class="gift-box">🎁</span>
         <h2>Bravo Malika ❤️</h2>
-        <p>Tu peux ouvrir l' <strong>enveloppe du dernier tiroir de ta table de chevet</strong> qui est annotée d'un petit F !<br>Pour remonter ton moral après ce long VD.</p>
+        <p>Tu peux ouvrir l'<strong>enveloppe dans le dernier tiroir de table de chevet qui continent l'annotation F</strong> qui t'attend !<br>Pour te récompenser après ce long VD.</p>
         <button class="continuer" onclick="showNext()">La suite de l'aventure ✦</button>
       </div>
     `;
@@ -350,7 +388,7 @@ body {
         <span class="lock">🔒</span>
         <h2>La prochaine énigme sera disponible le</h2>
         <div class="date">dimanche 5 juillet 2026</div>
-        <p>Patience… les meilleures choses valent la peine d'attendre ✦</p>
+        <p>Patience…  ✦</p>
       </div>
     `;
   }
