@@ -274,7 +274,7 @@
 
   <div class="indice-zone" id="indiceZone" style="display:none;">
     <button class="indice-btn" id="indiceBtn" onclick="ouvrirIndice()">🔍 Utiliser un indice</button>
-    <div class="indice-compteur" id="indiceCompteur">3 indices restants</div>
+    <div class="indice-compteur" id="indiceCompteur">2 indices restants</div>
     <div class="indice-reveal" id="indiceReveal"></div>
   </div>
 </div>
@@ -306,7 +306,7 @@
   const STORAGE_KEY = 'enigme2_indices';
 
   // Charger les indices depuis localStorage, sinon 3 par défaut
-  let indicesRestants = parseInt(localStorage.getItem(STORAGE_KEY) ?? '3', 10);
+  let indicesRestants = parseInt(localStorage.getItem(STORAGE_KEY) ?? '2', 10);
   let dernierNbErreurs = 0;
   let indiceUtiliseCeEssai = false;
 
