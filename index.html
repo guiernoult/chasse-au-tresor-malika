@@ -2,403 +2,195 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chasse au trésor de Malika — Énigme 2</title>
+<title>Chasse au trésor de Malika</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500&display=swap');
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Inter', sans-serif;
-    min-height: 100vh;
-    background: #1a0a0f;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    overflow-y: auto;
-    position: relative;
+  body{
+    font-family: Arial, sans-serif;
+    text-align:center;
+    margin:0;
+    min-height:100vh;
+    background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+    padding: 30px 15px;
+    box-sizing: border-box;
   }
-
-  .hearts-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-  .heart {
-    position: absolute;
-    opacity: 0;
-    animation: floatUp linear infinite;
-    color: #ff6b81;
+  .titre-principal{
+    color:white;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.2);
   }
-  @keyframes floatUp {
-    0%   { transform: translateY(100vh) scale(0.5); opacity: 0; }
-    10%  { opacity: 0.3; }
-    90%  { opacity: 0.15; }
-    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+  .container{
+    max-width:600px;
+    margin: 0 auto;
   }
-
-  .card {
-    position: relative;
-    z-index: 1;
-    background: #fff8f9;
-    border-radius: 24px;
-    padding: 48px 40px 40px;
-    width: 100%;
-    max-width: 580px;
-    box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,107,129,0.15);
+  .card{
+    background:white;
+    padding:20px 25px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.15);
+    margin-bottom:18px;
+    text-align:left;
   }
-
-  .badge {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #ff6b81;
-    background: #fff0f2;
-    border: 1px solid #ffd6dc;
-    border-radius: 99px;
-    padding: 4px 14px;
-    margin-bottom: 20px;
+  .card h2{
+    margin-top:0;
+    font-size:18px;
+    color:#333;
   }
-
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
-    color: #1a0a0f;
-    margin-bottom: 8px;
-    line-height: 1.2;
+  .enigme-text{
+    font-size:15px;
+    line-height:1.5;
+    color:#555;
   }
-
-  .subtitle {
-    font-size: 13px;
-    color: #999;
-    font-style: italic;
-    margin-bottom: 28px;
+  .final-box{
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    margin-top:20px;
   }
-
-  .enigme-box {
-    background: #fff;
-    border: 1px solid #f0dde0;
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 28px;
-    text-align: left;
+  input{
+    padding:10px;
+    font-size:18px;
+    width:70%;
+    margin-top:10px;
+    border:2px solid #ee9ca7;
+    border-radius:8px;
+    text-align:center;
+    letter-spacing: 3px;
   }
-
-  .enigme-box p {
-    font-size: 14px;
-    line-height: 1.85;
-    color: #3a2030;
+  button{
+    padding:10px 20px;
+    font-size:18px;
+    margin-top:15px;
+    cursor:pointer;
+    border:none;
+    border-radius:10px;
+    background:#ff6b81;
+    color:white;
   }
-
-  .enigme-box p strong { color: #cc3355; }
-
-  .letter-inputs {
-    display: flex;
-    gap: 6px;
-    justify-content: center;
-    margin-bottom: 20px;
+  button:hover{
+    background:#ff4d6d;
   }
-
-  .letter-input {
-    width: 40px;
-    height: 52px;
-    border: 2px solid #f0dde0;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: 700;
-    font-family: 'Playfair Display', serif;
-    color: #1a0a0f;
-    background: #fff;
-    text-transform: uppercase;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    outline: none;
+  #resultat{
+    margin-top:15px;
+    font-size:18px;
+    font-weight:bold;
+    min-height: 25px;
   }
-
-  .letter-input:focus {
-    border-color: #ff6b81;
-    box-shadow: 0 0 0 3px rgba(255,107,129,0.15);
+  #compteur{
+    margin-top:5px;
+    font-size:14px;
+    color:#999;
   }
-
-  button.valider {
-    width: 100%;
-    padding: 14px;
-    font-size: 16px;
-    font-weight: 500;
-    font-family: 'Inter', sans-serif;
-    cursor: pointer;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #ff6b81, #cc3355);
-    color: white;
-    letter-spacing: 0.03em;
-    transition: opacity 0.2s, transform 0.1s;
-  }
-  button.valider:hover  { opacity: 0.9; }
-  button.valider:active { transform: scale(0.98); }
-
-  #resultat {
-    margin-top: 16px;
-    font-size: 18px;
-    font-weight: 600;
-    text-align: center;
-    min-height: 28px;
-  }
-
-  .indice-zone {
-    margin-top: 16px;
-    text-align: center;
-  }
-
-  button.indice-btn {
-    padding: 10px 22px;
-    font-size: 14px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    cursor: pointer;
-    border: 2px solid #cc3355;
-    border-radius: 10px;
-    background: transparent;
-    color: #cc3355;
-    transition: all 0.2s;
-  }
-  button.indice-btn:hover { background: #fff0f2; }
-  button.indice-btn:disabled {
-    border-color: #ccc;
-    color: #ccc;
-    cursor: not-allowed;
-  }
-
-  .indice-compteur {
-    font-size: 12px;
-    color: #aaa;
-    margin-top: 6px;
-  }
-
-  .indice-reveal {
-    margin-top: 12px;
-    font-size: 14px;
-    color: #cc3355;
-    font-weight: 500;
-    background: #fff0f2;
-    border-radius: 10px;
-    padding: 10px 16px;
-    display: none;
-  }
-
-  .success-screen { text-align: center; padding: 20px 0; }
-  .success-screen .gift-box {
-    font-size: 80px;
-    animation: bounce 1s ease infinite alternate;
-    display: block;
-    margin-bottom: 16px;
-  }
-  @keyframes bounce {
-    from { transform: translateY(0); }
-    to   { transform: translateY(-12px); }
-  }
-  .success-screen h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 26px;
-    color: #1a0a0f;
-    margin-bottom: 12px;
-  }
-  .success-screen p { font-size: 15px; color: #555; line-height: 1.6; margin-bottom: 28px; }
-
-  button.continuer {
-    padding: 13px 28px;
-    font-size: 15px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #ff6b81, #cc3355);
-    color: white;
-    transition: opacity 0.2s;
-  }
-  button.continuer:hover { opacity: 0.9; }
-
-  .next-screen { text-align: center; padding: 20px 0; }
-  .next-screen .lock { font-size: 72px; margin-bottom: 20px; display: block; }
-  .next-screen h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    color: #1a0a0f;
-    margin-bottom: 10px;
-  }
-  .next-screen .date {
-    font-family: 'Playfair Display', serif;
-    font-size: 32px;
-    color: #cc3355;
-    font-weight: 700;
-    margin-top: 10px;
-  }
-  .next-screen p { font-size: 14px; color: #888; margin-top: 10px; }
 </style>
 </head>
 <body>
 
-<div class="hearts-bg" id="heartsBg"></div>
+<h1 class="titre-principal">🔎 Chasse au trésor de Malika ❤️</h1>
 
-<div class="card" id="mainCard">
-  <div class="badge">✦ Énigme n°2</div>
-  <h1>De ville en ville…</h1>
-  <p class="subtitle">Trouve le code à 7 lettres qui se cache dans nos souvenirs</p>
+<div class="container">
 
-  <div class="enigme-box">
-    <p>
-      <strong>Mon 1er</strong> correspond à la première lettre de la ville où Éloïse s'est fait attaquer par un cheval.<br><br>
-      <strong>Mon 2ème</strong> correspond à la deuxième lettre de la ville où Guillaume s'est fait attaquer par un cheval.<br><br>
-      <strong>Mon 3ème</strong> correspond à la dernière lettre du jour où nous avons embarqué pour Quiberon.<br><br>
-      <strong>Mon 4ème</strong> correspond au nombre de villes dans lesquelles tu as habitée (plus de 3 mois) + le nombre de villes dans lesquelles j'ai habité (plus de 3 mois) depuis qu'on se connaît → prends la première lettre de ce chiffre/nombre.<br><br>
-      <strong>Mon 5ème</strong> correspond au nombre de pays où nous sommes allés ensemble → prends la deuxième lettre de ce chiffre/nombre.<br><br>
-      <strong>Mon 6ème</strong> correspond à la première lettre du moyen de transport que nous avons pris pour notre premier long voyage à deux (plus de 5h).<br><br>
-      <strong>Mon 7ème</strong> correspond à la deuxième lettre du mois où tu aurais pu venir chez ma famille pour la toute première fois.
-    </p>
+  <div class="card">
+    <h2>Énigme 1 🇪🇸</h2>
+    <p class="enigme-text">Una broma en español!<br><br><i>¿Por qué un tomate nunca bebe café?</i><br><br>Traduis l'élément principal de la réponse en français, et garde la <b>deuxième lettre</b>.</p>
   </div>
 
-  <div class="letter-inputs">
-    <input class="letter-input" maxlength="1" id="l0" />
-    <input class="letter-input" maxlength="1" id="l1" />
-    <input class="letter-input" maxlength="1" id="l2" />
-    <input class="letter-input" maxlength="1" id="l3" />
-    <input class="letter-input" maxlength="1" id="l4" />
-    <input class="letter-input" maxlength="1" id="l5" />
-    <input class="letter-input" maxlength="1" id="l6" />
+  <div class="card">
+    <h2>Énigme 2 🔥</h2>
+    <p class="enigme-text">Je suis toujours affamé, je dois toujours être nourri, mais si tu me donnes à boire, je meurs.<br><br>Traduis la réponse en espagnol et prends la <b>deuxième lettre</b>.</p>
   </div>
 
-  <button class="valider" onclick="verifier()">Valider ✦</button>
-
-  <div id="resultat"></div>
-
-  <div class="indice-zone" id="indiceZone" style="display:none;">
-    <button class="indice-btn" id="indiceBtn" onclick="ouvrirIndice()">🔍 Utiliser un indice</button>
-    <div class="indice-compteur" id="indiceCompteur">2 indices restants</div>
-    <div class="indice-reveal" id="indiceReveal"></div>
+  <div class="card">
+    <h2>Énigme 3 ✈️</h2>
+    <p class="enigme-text">Ensemble des 4 destinations rêvées de Piki et Malika (3 lieux + un continent) pour un petit break dans les années à venir…<br><br>- Prends les 2 réponses qui comprennent chacune 2 fois une voyelle absente de « oui-oui »<br>- Enlève celle qui n'est pas une île<br>- Prends les deux consonnes qui se répètent dans la réponse restante<br>- Glisse entre les deux la première lettre de la réponse qui commence et finit par une voyelle<br>- Rajoute à la fin la première lettre de la réponse continentale<br>- Trouve son mari, puis son dernier écrit<br>- La première lettre est la bonne.</p>
   </div>
+
+  <div class="card">
+    <h2>Énigme 4 👑</h2>
+    <p class="enigme-text">Je ne vis pas seul, j'ai déménagé récemment, mais en ces mois, je m'ennuie ardemment. D'entre eux, je suis le roi. Je suis...<br><br>Prends la première lettre.</p>
+  </div>
+
+  <div class="card">
+    <h2>Énigme 5 🦬</h2>
+    <p class="enigme-text">Homme au pas cadencé,<br>Dans le partage pour les hommes avec un petit h seulement,<br>Amoureux des bisons et des coups de pression.<br><br>Prends la première lettre.</p>
+  </div>
+
+  <div class="final-box">
+    <h2>Assemble les 5 lettres et rentre le code 🔑</h2>
+    <input id="code" placeholder="Code final...">
+    <br>
+    <button onclick="verifier()">Valider</button>
+    <button id="btnIndice" onclick="donnerIndice()" style="background:#999;">💡 Indice (2 restants)</button>
+    <div id="resultat"></div>
+    <div id="compteur"></div>
+  </div>
+
 </div>
 
 <script>
-  const bg = document.getElementById('heartsBg');
-  for (let i = 0; i < 18; i++) {
-    const h = document.createElement('div');
-    h.className = 'heart';
-    h.textContent = ['♥','❤','♡'][Math.floor(Math.random()*3)];
-    h.style.left = Math.random() * 100 + 'vw';
-    h.style.animationDuration = (8 + Math.random() * 12) + 's';
-    h.style.animationDelay = (Math.random() * 12) + 's';
-    h.style.fontSize = (10 + Math.random() * 16) + 'px';
-    bg.appendChild(h);
+const bonneReponse = "huldm";
+let erreurs = 0;
+let indicesUtilises = 0;
+const maxIndices = 2;
+
+document.getElementById("code").addEventListener("keyup", function(event){
+  if(event.key === "Enter"){ verifier(); }
+});
+
+function donnerIndice(){
+  if(indicesUtilises >= maxIndices){
+    return;
   }
+  indicesUtilises++;
 
-  document.querySelectorAll('.letter-input').forEach((input, i, arr) => {
-    input.addEventListener('input', () => {
-      input.value = input.value.toUpperCase().replace(/[^A-Z]/g, '');
-      if (input.value && i < arr.length - 1) arr[i + 1].focus();
-    });
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Backspace' && !input.value && i > 0) arr[i - 1].focus();
-    });
-  });
-
-  const CODE = 'BAINIFA';
-  const STORAGE_KEY = 'enigme2_indices';
-
-  // Charger les indices depuis localStorage, sinon 3 par défaut
-  let indicesRestants = parseInt(localStorage.getItem(STORAGE_KEY) ?? '2', 10);
-  let dernierNbErreurs = 0;
-  let indiceUtiliseCeEssai = false;
-
-  function sauvegarderIndices() {
-    localStorage.setItem(STORAGE_KEY, indicesRestants);
-  }
-
-  function verifier() {
-    const inputs = Array.from({length: 7}, (_, i) => document.getElementById('l' + i));
-    const entered = inputs.map(inp => inp.value.toUpperCase());
-    const code = entered.join('');
-    const res = document.getElementById('resultat');
-    const indiceZone = document.getElementById('indiceZone');
-    const indiceReveal = document.getElementById('indiceReveal');
-
-    indiceReveal.style.display = 'none';
-    indiceUtiliseCeEssai = false;
-
-    if (code === CODE) {
-      setTimeout(showSuccess, 300);
-      return;
-    }
-
-    const missing = entered.filter(c => c === '').length;
-    const errors = entered.filter((c, i) => c !== '' && c !== CODE[i]).length;
-    dernierNbErreurs = errors;
-
-    if (missing > 0) {
-      res.style.color = '#c62828';
-      res.textContent = '❌ Il manque ' + missing + ' lettre' + (missing > 1 ? 's' : '') + ' !';
-      indiceZone.style.display = 'none';
-    } else {
-      res.style.color = '#c62828';
-      res.textContent = "❌ Ce n'est pas ça…";
-      indiceZone.style.display = 'block';
-      majBoutonIndice();
+  const val = document.getElementById("code").value.toLowerCase().trim();
+  let lettresCorrectes = 0;
+  for(let i = 0; i < bonneReponse.length; i++){
+    if(val[i] === bonneReponse[i]){
+      lettresCorrectes++;
     }
   }
 
-  function majBoutonIndice() {
-    const btn = document.getElementById('indiceBtn');
-    const compteur = document.getElementById('indiceCompteur');
-    if (indicesRestants <= 0) {
-      btn.disabled = true;
-      compteur.textContent = "Plus d'indices disponibles";
-    } else {
-      btn.disabled = false;
-      compteur.textContent = indicesRestants + ' indice' + (indicesRestants > 1 ? 's' : '') + ' restant' + (indicesRestants > 1 ? 's' : '');
-    }
+  document.getElementById("resultat").innerHTML =
+    "💡 Indice : " + lettresCorrectes + " / " + bonneReponse.length + " lettres sont bien placées";
+  document.getElementById("resultat").style.color = "#cc6600";
+
+  const restants = maxIndices - indicesUtilises;
+  if(restants <= 0){
+    document.getElementById("btnIndice").disabled = true;
+    document.getElementById("btnIndice").innerHTML = "💡 Indice (0 restant)";
+  } else {
+    document.getElementById("btnIndice").innerHTML = "💡 Indice (" + restants + " restant" + (restants > 1 ? "s" : "") + ")";
   }
+}
 
-  function ouvrirIndice() {
-    if (indicesRestants <= 0 || indiceUtiliseCeEssai) return;
+function verifier(){
+  const val = document.getElementById("code").value.toLowerCase().trim();
 
-    indicesRestants--;
-    sauvegarderIndices(); // 💾 on sauvegarde immédiatement
-    indiceUtiliseCeEssai = true;
-
-    const reveal = document.getElementById('indiceReveal');
-    const msg = dernierNbErreurs === 1
-      ? '💡 1 erreur dans ton code — tu brûles !'
-      : `💡 ${dernierNbErreurs} erreurs dans ton code — cherche encore !`;
-
-    reveal.textContent = msg;
-    reveal.style.display = 'block';
-
-    majBoutonIndice();
-    document.getElementById('indiceBtn').disabled = true;
-  }
-
-  function showSuccess() {
-    localStorage.removeItem(STORAGE_KEY); // on remet à zéro si elle a réussi
-    document.getElementById('mainCard').innerHTML = `
-      <div class="success-screen">
-        <span class="gift-box">🎁</span>
-        <h2>Bravo Malika ❤️</h2>
-        <p>Tu peux ouvrir l'<strong>enveloppe dans le dernier tiroir de table de chevet qui continent l'annotation "F"</strong> !<br>Pour te réconforter après ce long VD.</p>
-        <button class="continuer" onclick="showNext()">La suite de l'aventure ✦</button>
+  if(val === bonneReponse){
+    document.querySelector(".container").innerHTML = `
+      <div class="final-box">
+        <div style="font-size:60px;">🎁</div>
+        <h1>Bravo Malika ❤️</h1>
+        <p style="font-size:18px;">
+          Tu peux ouvrir l'enveloppe avec « CS » écrit dessus !
+        </p>
+        <button onclick="suiteAventure()">Continuer l'aventure ➜</button>
       </div>
     `;
+  } else {
+    document.getElementById("resultat").innerHTML = "❌ Essaie encore";
+    document.getElementById("resultat").style.color = "red";
   }
+}
 
-  function showNext() {
-    document.getElementById('mainCard').innerHTML = `
-      <div class="next-screen">
-        <span class="lock">🔒</span>
-        <h2>La prochaine énigme sera disponible le</h2>
-        <div class="date">dimanche 5 juillet 2026</div>
-        <p>Patience…  ✦</p>
-      </div>
-    `;
-  }
+function suiteAventure(){
+  document.querySelector(".container").innerHTML = `
+    <div class="final-box">
+      <div style="font-size:60px;">🔒</div>
+      <h1>Prochaine énigme disponible le</h1>
+      <h2 style="color:#ff6b81; font-size:28px;">dimanche 28 juin 2026</h2>
+    </div>
+  `;
+}
 </script>
 </body>
 </html>
