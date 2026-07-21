@@ -75,11 +75,6 @@
     font-weight:bold;
     min-height: 25px;
   }
-  #compteur{
-    margin-top:5px;
-    font-size:14px;
-    color:#999;
-  }
 </style>
 </head>
 <body>
@@ -89,97 +84,136 @@
 <div class="container">
 
   <div class="card">
-    <h2>Énigme 1 🇪🇸</h2>
-    <p class="enigme-text">Una broma en español!<br><br><i>¿Por qué un tomate nunca bebe café?</i><br><br>Traduis l'élément principal de la réponse en français, et garde la <b>deuxième lettre</b>.</p>
+    <h2>Énigme 1 🏔️</h2>
+    <p class="enigme-text">Perchée sur ma colline, amie des chats boiteux et des shots douteux, je suis …<br><br>Prends la première lettre.</p>
   </div>
 
   <div class="card">
-    <h2>Énigme 2 🔥</h2>
-    <p class="enigme-text">Je suis toujours affamé, je dois toujours être nourri, mais si tu me donnes à boire, je meurs.<br><br>Traduis la réponse en espagnol et prends la <b>deuxième lettre</b>.</p>
-  </div>
-
-  <div class="card">
-    <h2>Énigme 3 ✈️</h2>
-    <p class="enigme-text">Ensemble des 4 destinations rêvées de Piki et Malika (3 lieux + un continent) pour un petit break dans les années à venir…<br><br>- Prends les 2 réponses qui comprennent chacune 2 fois une voyelle absente de « oui-oui »<br>- Enlève celle qui n'est pas une île<br>- Prends les deux consonnes qui se répètent dans la réponse restante<br>- Glisse entre les deux la première lettre de la réponse qui commence et finit par une voyelle<br>- Rajoute à la fin la première lettre de la réponse continentale<br>- Trouve son mari, puis son dernier écrit<br>- La première lettre est la bonne.</p>
-  </div>
-
-  <div class="card">
-    <h2>Énigme 4 👑</h2>
-    <p class="enigme-text">Je ne vis pas seul, j'ai déménagé récemment, mais en ces mois, je m'ennuie ardemment. D'entre eux, je suis le roi. Je suis...<br><br>Prends la première lettre.</p>
-  </div>
-
-  <div class="card">
-    <h2>Énigme 5 🦬</h2>
-    <p class="enigme-text">Homme au pas cadencé,<br>Dans le partage pour les hommes avec un petit h seulement,<br>Amoureux des bisons et des coups de pression.<br><br>Prends la première lettre.</p>
+    <h2>Énigme 2 📅</h2>
+    <p class="enigme-text">Je gagne des jours chaque année et peux même pousser à déménager, je suis….<br><br>Prends la dernière lettre.</p>
   </div>
 
   <div class="final-box">
-    <h2>Assemble les 5 lettres et rentre le code 🔑</h2>
-    <input id="code" placeholder="Code final...">
+    <h2>Assemble les 2 lettres et rentre le code 🔑</h2>
+    <input id="code" placeholder="Code...">
     <br>
-    <button onclick="verifier()">Valider</button>
-    <button id="btnIndice" onclick="donnerIndice()" style="background:#999;">💡 Indice (2 restants)</button>
+    <button onclick="verifierGE()">Valider</button>
     <div id="resultat"></div>
-    <div id="compteur"></div>
   </div>
 
 </div>
 
 <script>
-const bonneReponse = "huldm";
-let erreurs = 0;
-let indicesUtilises = 0;
-const maxIndices = 2;
-
 document.getElementById("code").addEventListener("keyup", function(event){
-  if(event.key === "Enter"){ verifier(); }
+  if(event.key === "Enter"){ verifierGE(); }
 });
 
-function donnerIndice(){
-  if(indicesUtilises >= maxIndices){
-    return;
-  }
-  indicesUtilises++;
-
+function verifierGE(){
   const val = document.getElementById("code").value.toLowerCase().trim();
-  let lettresCorrectes = 0;
-  for(let i = 0; i < bonneReponse.length; i++){
-    if(val[i] === bonneReponse[i]){
-      lettresCorrectes++;
-    }
-  }
-
-  document.getElementById("resultat").innerHTML =
-    "💡 Indice : " + lettresCorrectes + " / " + bonneReponse.length + " lettres sont bien placées";
-  document.getElementById("resultat").style.color = "#cc6600";
-
-  const restants = maxIndices - indicesUtilises;
-  if(restants <= 0){
-    document.getElementById("btnIndice").disabled = true;
-    document.getElementById("btnIndice").innerHTML = "💡 Indice (0 restant)";
-  } else {
-    document.getElementById("btnIndice").innerHTML = "💡 Indice (" + restants + " restant" + (restants > 1 ? "s" : "") + ")";
-  }
-}
-
-function verifier(){
-  const val = document.getElementById("code").value.toLowerCase().trim();
-
-  if(val === bonneReponse){
-    document.querySelector(".container").innerHTML = `
-      <div class="final-box">
-        <div style="font-size:60px;">🎁</div>
-        <h1>Bravo Malika ❤️</h1>
-        <p style="font-size:18px;">
-          Tu peux ouvrir l'enveloppe avec « CS » écrit dessus !
-        </p>
-        <button onclick="suiteAventure()">Continuer l'aventure ➜</button>
-      </div>
-    `;
+  if(val === "ge"){
+    afficherPhoto1();
   } else {
     document.getElementById("resultat").innerHTML = "❌ Essaie encore";
     document.getElementById("resultat").style.color = "red";
   }
+}
+
+function normaliserDate(str){
+  return str.toLowerCase().trim()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/\s+/g," ")
+    .replace(/\.$/,"");
+}
+
+function afficherPhoto1(){
+  document.querySelector(".container").innerHTML = `
+    <div class="final-box">
+      <img src="vietnam.PNG" alt="photo souvenir" style="width:100%; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
+      <h2 style="margin-top:20px;">Donne la date de cette photo ?</h2>
+      <input id="date1" placeholder="jj mmm aaaa">
+      <br>
+      <button onclick="verifierDate1()">Valider</button>
+      <div id="resultatDate1"></div>
+    </div>
+  `;
+  document.getElementById("date1").addEventListener("keyup", function(event){
+    if(event.key === "Enter"){ verifierDate1(); }
+  });
+}
+
+function verifierDate1(){
+  const val = normaliserDate(document.getElementById("date1").value);
+  if(val === normaliserDate("18 oct 2025")){
+    afficherPhoto2();
+  } else {
+    document.getElementById("resultatDate1").innerHTML = "❌ Essaie encore";
+    document.getElementById("resultatDate1").style.color = "red";
+  }
+}
+
+function afficherPhoto2(){
+  document.querySelector(".container").innerHTML = `
+    <div class="final-box">
+      <img src="calec.PNG" alt="photo souvenir" style="width:100%; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
+      <h2 style="margin-top:20px;">Donne la date de cette photo ?</h2>
+      <input id="date2" placeholder="jj mmm aaaa">
+      <br>
+      <button onclick="verifierDate2()">Valider</button>
+      <div id="resultatDate2"></div>
+    </div>
+  `;
+  document.getElementById("date2").addEventListener("keyup", function(event){
+    if(event.key === "Enter"){ verifierDate2(); }
+  });
+}
+
+function verifierDate2(){
+  const val = normaliserDate(document.getElementById("date2").value);
+  if(val === normaliserDate("10 juin 2026")){
+    afficherPhoto3();
+  } else {
+    document.getElementById("resultatDate2").innerHTML = "❌ Essaie encore";
+    document.getElementById("resultatDate2").style.color = "red";
+  }
+}
+
+function afficherPhoto3(){
+  document.querySelector(".container").innerHTML = `
+    <div class="final-box">
+      <img src="art.PNG" alt="photo souvenir" style="width:100%; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
+      <h2 style="margin-top:20px;">Donne la date de cette photo ?</h2>
+      <input id="date3" placeholder="jj mmm aaaa">
+      <br>
+      <button onclick="verifierDate3()">Valider</button>
+      <div id="resultatDate3"></div>
+    </div>
+  `;
+  document.getElementById("date3").addEventListener("keyup", function(event){
+    if(event.key === "Enter"){ verifierDate3(); }
+  });
+}
+
+function verifierDate3(){
+  const val = normaliserDate(document.getElementById("date3").value);
+  if(val === normaliserDate("6 juin 2026")){
+    afficherCadeau();
+  } else {
+    document.getElementById("resultatDate3").innerHTML = "❌ Essaie encore";
+    document.getElementById("resultatDate3").style.color = "red";
+  }
+}
+
+function afficherCadeau(){
+  document.querySelector(".container").innerHTML = `
+    <div class="final-box">
+      <div style="font-size:60px;">🎁</div>
+      <h1>Bravo Malika ❤️</h1>
+      <p style="font-size:18px;">
+        Tu peux ouvrir l'enveloppe avec « CS » écrit dessus !
+      </p>
+      <button onclick="suiteAventure()">Continuer l'aventure ➜</button>
+    </div>
+  `;
 }
 
 function suiteAventure(){
@@ -189,7 +223,6 @@ function suiteAventure(){
       <h1>Prochaine énigme disponible le</h1>
       <h2 style="color:#ff6b81; font-size:28px;">dimanche 12 juillet 2026</h2>
     </div>
-    <img src="960db071-0f94-4661-b92d-51f7397b978f.jpg" alt="photo souvenir" style="width:100%; border-radius:20px; margin-top:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
   `;
 }
 </script>
