@@ -140,7 +140,7 @@ function afficherPhoto1(){
 
 function verifierDate1(){
   const val = normaliserDate(document.getElementById("date1").value);
-  if(val === "18/10/2026"){
+  if(val === "18/10/2025"){
     afficherEncouragement1();
   } else {
     document.getElementById("resultatDate1").innerHTML = "❌ Essaie encore";
@@ -153,7 +153,7 @@ function afficherEncouragement1(){
     <div class="final-box">
       <div style="font-size:60px;">🌟</div>
       <h1>Bravo Malika !</h1>
-      <p style="font-size:18px;">Tu es sur la bonne voie, continue comme ça ❤️</p>
+      <p style="font-size:18px;">Bien joué ❤️</p>
       <button onclick="afficherPhoto2()">Continuer l'aventure ➜</button>
     </div>
   `;
@@ -199,7 +199,7 @@ function afficherEncouragement2(){
 function afficherPhoto3(){
   document.querySelector(".container").innerHTML = `
     <div class="final-box">
-      <img src="art.PNG" alt="photo souvenir" style="width:100%; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
+      <img src="art2.PNG" alt="photo souvenir" style="width:100%; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
       <h2 style="margin-top:20px;">Donne la date de cette photo ?</h2>
       <input id="date3" placeholder="jj/mm/aaaa">
       <br>
