@@ -119,10 +119,7 @@ function verifierGE(){
 }
 
 function normaliserDate(str){
-  return str.toLowerCase().trim()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
-    .replace(/\s+/g," ")
-    .replace(/\.$/,"");
+  return str.trim().replace(/\s+/g,"").replace(/-/g,"/");
 }
 
 function afficherPhoto1(){
@@ -130,7 +127,7 @@ function afficherPhoto1(){
     <div class="final-box">
       <img src="vietnam.PNG" alt="photo souvenir" style="width:100%; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
       <h2 style="margin-top:20px;">Donne la date de cette photo ?</h2>
-      <input id="date1" placeholder="jj mmm aaaa">
+      <input id="date1" placeholder="jj/mm/aaaa">
       <br>
       <button onclick="verifierDate1()">Valider</button>
       <div id="resultatDate1"></div>
@@ -143,12 +140,23 @@ function afficherPhoto1(){
 
 function verifierDate1(){
   const val = normaliserDate(document.getElementById("date1").value);
-  if(val === normaliserDate("18 oct 2025")){
-    afficherPhoto2();
+  if(val === "18/10/2026"){
+    afficherEncouragement1();
   } else {
     document.getElementById("resultatDate1").innerHTML = "❌ Essaie encore";
     document.getElementById("resultatDate1").style.color = "red";
   }
+}
+
+function afficherEncouragement1(){
+  document.querySelector(".container").innerHTML = `
+    <div class="final-box">
+      <div style="font-size:60px;">🌟</div>
+      <h1>Bravo Malika !</h1>
+      <p style="font-size:18px;">Tu es sur la bonne voie, continue comme ça ❤️</p>
+      <button onclick="afficherPhoto2()">Continuer l'aventure ➜</button>
+    </div>
+  `;
 }
 
 function afficherPhoto2(){
@@ -156,7 +164,7 @@ function afficherPhoto2(){
     <div class="final-box">
       <img src="calec.PNG" alt="photo souvenir" style="width:100%; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
       <h2 style="margin-top:20px;">Donne la date de cette photo ?</h2>
-      <input id="date2" placeholder="jj mmm aaaa">
+      <input id="date2" placeholder="jj/mm/aaaa">
       <br>
       <button onclick="verifierDate2()">Valider</button>
       <div id="resultatDate2"></div>
@@ -169,12 +177,23 @@ function afficherPhoto2(){
 
 function verifierDate2(){
   const val = normaliserDate(document.getElementById("date2").value);
-  if(val === normaliserDate("10 juin 2026")){
-    afficherPhoto3();
+  if(val === "10/06/2026"){
+    afficherEncouragement2();
   } else {
     document.getElementById("resultatDate2").innerHTML = "❌ Essaie encore";
     document.getElementById("resultatDate2").style.color = "red";
   }
+}
+
+function afficherEncouragement2(){
+  document.querySelector(".container").innerHTML = `
+    <div class="final-box">
+      <div style="font-size:60px;">✨</div>
+      <h1>Bien joué Malika !</h1>
+      <p style="font-size:18px;">Plus qu'une étape, tu y es presque ❤️</p>
+      <button onclick="afficherPhoto3()">Continuer l'aventure ➜</button>
+    </div>
+  `;
 }
 
 function afficherPhoto3(){
@@ -182,7 +201,7 @@ function afficherPhoto3(){
     <div class="final-box">
       <img src="art.PNG" alt="photo souvenir" style="width:100%; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
       <h2 style="margin-top:20px;">Donne la date de cette photo ?</h2>
-      <input id="date3" placeholder="jj mmm aaaa">
+      <input id="date3" placeholder="jj/mm/aaaa">
       <br>
       <button onclick="verifierDate3()">Valider</button>
       <div id="resultatDate3"></div>
@@ -195,7 +214,7 @@ function afficherPhoto3(){
 
 function verifierDate3(){
   const val = normaliserDate(document.getElementById("date3").value);
-  if(val === normaliserDate("6 juin 2026")){
+  if(val === "06/06/2026"){
     afficherCadeau();
   } else {
     document.getElementById("resultatDate3").innerHTML = "❌ Essaie encore";
@@ -209,7 +228,8 @@ function afficherCadeau(){
       <div style="font-size:60px;">🎁</div>
       <h1>Bravo Malika ❤️</h1>
       <p style="font-size:18px;">
-        Tu peux ouvrir le colis sous ton lit avant de te coucher. À ouvrir au calme, avec une tisane, une musique douce et 15 minutes rien que pour toi.
+        Tu peux regarder sous ton lit. À ouvrir dans un moment de calme, avec une petite musique en fond, une tisane chaude et 15 minutes rien qu'à toi.
+      </p>
       <button onclick="suiteAventure()">Continuer l'aventure ➜</button>
     </div>
   `;
