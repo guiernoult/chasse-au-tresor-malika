@@ -54,7 +54,7 @@
     border:2px solid #ee9ca7;
     border-radius:8px;
     text-align:center;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
   }
   button{
     padding:10px 20px;
@@ -84,33 +84,35 @@
 <div class="container">
 
   <div class="card">
-    <h2>Énigme 1 🏔️</h2>
-    <p class="enigme-text">Perchée sur ma colline, amie des chats boiteux et des shots douteux, je suis …<br><br>Prends la première lettre.</p>
-  </div>
-
-  <div class="card">
-    <h2>Énigme 2 📅</h2>
-    <p class="enigme-text">Je gagne des jours chaque année et peux même pousser à déménager, je suis….<br><br>Prends la dernière lettre.</p>
+    <h2>Énigme 🔑</h2>
+    <p class="enigme-text">Difficile à ouvrir, je tiens en 3 lettres...</p>
   </div>
 
   <div class="final-box">
-    <h2>Assemble les 2 lettres et rentre le code 🔑</h2>
-    <input id="code" placeholder="Code...">
+    <h2>Entre la réponse 🔐</h2>
+    <input id="code" placeholder="Réponse en 3 lettres...">
     <br>
-    <button onclick="verifierGE()">Valider</button>
+    <button onclick="verifierEnigme1()">Valider</button>
     <div id="resultat"></div>
   </div>
 
 </div>
 
 <script>
+// Permet de valider avec la touche Entrée sur la première énigme
 document.getElementById("code").addEventListener("keyup", function(event){
-  if(event.key === "Enter"){ verifierGE(); }
+  if(event.key === "Enter"){ verifierEnigme1(); }
 });
 
-function verifierGE(){
+// Normalise les saisies de date (gère espaces, tirets et slashes)
+function normaliserDate(str){
+  return str.trim().replace(/\s+/g,"").replace(/-/g,"/");
+}
+
+// 1. Vérification Énigme PEA
+function verifierEnigme1(){
   const val = document.getElementById("code").value.toLowerCase().trim();
-  if(val === "ge"){
+  if(val === "pea"){
     afficherPhoto1();
   } else {
     document.getElementById("resultat").innerHTML = "❌ Essaie encore";
@@ -118,15 +120,12 @@ function verifierGE(){
   }
 }
 
-function normaliserDate(str){
-  return str.trim().replace(/\s+/g,"").replace(/-/g,"/");
-}
-
+// 2. Affichage Photo 1 : ABBA
 function afficherPhoto1(){
   document.querySelector(".container").innerHTML = `
     <div class="final-box">
-      <img src="vietnam.PNG" alt="photo souvenir" style="width:100%; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
-      <h2 style="margin-top:20px;">Donne la date de cette photo ?</h2>
+      <img src="abba.png" alt="photo souvenir ABBA" style="width:100%; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
+      <h2 style="margin-top:20px;">Quelle est la date de cette photo ?</h2>
       <input id="date1" placeholder="jj/mm/aaaa">
       <br>
       <button onclick="verifierDate1()">Valider</button>
@@ -138,9 +137,10 @@ function afficherPhoto1(){
   });
 }
 
+// Vérification Date ABBA (07/10/2023)
 function verifierDate1(){
   const val = normaliserDate(document.getElementById("date1").value);
-  if(val === "18/10/2025"){
+  if(val === "07/10/2023" || val === "7/10/2023"){
     afficherEncouragement1();
   } else {
     document.getElementById("resultatDate1").innerHTML = "❌ Essaie encore";
@@ -148,6 +148,7 @@ function verifierDate1(){
   }
 }
 
+// Intermédiaire 1
 function afficherEncouragement1(){
   document.querySelector(".container").innerHTML = `
     <div class="final-box">
@@ -159,11 +160,12 @@ function afficherEncouragement1(){
   `;
 }
 
+// 3. Affichage Photo 2 : JMJ
 function afficherPhoto2(){
   document.querySelector(".container").innerHTML = `
     <div class="final-box">
-      <img src="calec.PNG" alt="photo souvenir" style="width:100%; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
-      <h2 style="margin-top:20px;">Donne la date de cette photo ?</h2>
+      <img src="jmj.png" alt="photo souvenir JMJ" style="width:100%; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
+      <h2 style="margin-top:20px;">Quelle est la date de cette photo ?</h2>
       <input id="date2" placeholder="jj/mm/aaaa">
       <br>
       <button onclick="verifierDate2()">Valider</button>
@@ -175,73 +177,24 @@ function afficherPhoto2(){
   });
 }
 
+// Vérification Date JMJ (06/08/2023)
 function verifierDate2(){
   const val = normaliserDate(document.getElementById("date2").value);
-  if(val === "10/06/2026"){
-    afficherEncouragement2();
+  if(val === "06/08/2023" || val === "6/8/2023" || val === "06/8/2023" || val === "6/08/2023"){
+    afficherFin();
   } else {
     document.getElementById("resultatDate2").innerHTML = "❌ Essaie encore";
     document.getElementById("resultatDate2").style.color = "red";
   }
 }
 
-function afficherEncouragement2(){
+// Écran de réussite final
+function afficherFin(){
   document.querySelector(".container").innerHTML = `
     <div class="final-box">
-      <div style="font-size:60px;">✨</div>
-      <h1>Bien joué Malika !</h1>
-      <p style="font-size:18px;">Plus qu'une étape, tu y es presque ❤️</p>
-      <button onclick="afficherPhoto3()">Continuer l'aventure ➜</button>
-    </div>
-  `;
-}
-
-function afficherPhoto3(){
-  document.querySelector(".container").innerHTML = `
-    <div class="final-box">
-      <img src="art2.PNG" alt="photo souvenir" style="width:100%; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
-      <h2 style="margin-top:20px;">Donne la date de cette photo ?</h2>
-      <input id="date3" placeholder="jj/mm/aaaa">
-      <br>
-      <button onclick="verifierDate3()">Valider</button>
-      <div id="resultatDate3"></div>
-    </div>
-  `;
-  document.getElementById("date3").addEventListener("keyup", function(event){
-    if(event.key === "Enter"){ verifierDate3(); }
-  });
-}
-
-function verifierDate3(){
-  const val = normaliserDate(document.getElementById("date3").value);
-  if(val === "06/06/2026"){
-    afficherCadeau();
-  } else {
-    document.getElementById("resultatDate3").innerHTML = "❌ Essaie encore";
-    document.getElementById("resultatDate3").style.color = "red";
-  }
-}
-
-function afficherCadeau(){
-  document.querySelector(".container").innerHTML = `
-    <div class="final-box">
-      <div style="font-size:60px;">🎁</div>
-      <img src="pikpik.jpeg" alt="pikpik" style="width:100%; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2); margin-bottom:15px;">
-      <h1>Bravo Malika ❤️</h1>
-      <p style="font-size:18px;">
-        Tu peux regarder sous ton lit. À ouvrir dans un moment de calme, avec une petite musique en fond, une tisane chaude et 15 minutes rien qu'à toi.
-      </p>
-      <button onclick="suiteAventure()">Continuer l'aventure ➜</button>
-    </div>
-  `;
-}
-
-function suiteAventure(){
-  document.querySelector(".container").innerHTML = `
-    <div class="final-box">
-      <div style="font-size:60px;">🔒</div>
-      <h1>Prochaine énigme disponible le</h1>
-      <h2 style="color:#ff6b81; font-size:28px;">dimanche 26 juillet 2026</h2>
+      <div style="font-size:60px;">🎉</div>
+      <h1>Félicitations Malika !</h1>
+      <p style="font-size:18px;">Tu as résolu toutes les énigmes comme une cheffe ❤️. Tu peux ouvrir l'enveloppe C.C et C.C2 - A OUVRIR EN CACHETTE....</p>
     </div>
   `;
 }
