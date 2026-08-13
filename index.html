@@ -2,78 +2,91 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chasse au trésor de Malika</title>
 <style>
-  body{
+  body {
     font-family: Arial, sans-serif;
-    text-align:center;
-    margin:0;
-    min-height:100vh;
+    text-align: center;
+    margin: 0;
+    min-height: 100vh;
     background: linear-gradient(135deg, #ffdde1, #ee9ca7);
     padding: 30px 15px;
     box-sizing: border-box;
   }
-  .titre-principal{
-    color:white;
+  .titre-principal {
+    color: white;
     text-shadow: 0 2px 5px rgba(0,0,0,0.2);
   }
-  .container{
-    max-width:600px;
+  .container {
+    max-width: 650px;
     margin: 0 auto;
   }
-  .card{
-    background:white;
-    padding:20px 25px;
-    border-radius:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.15);
-    margin-bottom:18px;
-    text-align:left;
+  .card, .final-box {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    margin-bottom: 20px;
+    text-align: left;
   }
-  .card h2{
-    margin-top:0;
-    font-size:18px;
-    color:#333;
+  .card h2, .final-box h2 {
+    margin-top: 0;
+    color: #333;
   }
-  .enigme-text{
-    font-size:15px;
-    line-height:1.5;
-    color:#555;
+  .qcm-option {
+    display: block;
+    background: #f8f9fa;
+    border: 2px solid #ee9ca7;
+    padding: 12px 15px;
+    margin: 10px 0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 16px;
+    text-align: left;
   }
-  .final-box{
-    background:white;
-    padding:30px;
-    border-radius:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.2);
-    margin-top:20px;
+  .qcm-option:hover {
+    background: #ffe6ea;
   }
-  input{
-    padding:10px;
-    font-size:18px;
-    width:70%;
-    margin-top:10px;
-    border:2px solid #ee9ca7;
-    border-radius:8px;
-    text-align:center;
-    letter-spacing: 2px;
+  .qcm-option input {
+    margin-right: 12px;
+    transform: scale(1.2);
   }
-  button{
-    padding:10px 20px;
-    font-size:18px;
-    margin-top:15px;
-    cursor:pointer;
-    border:none;
-    border-radius:10px;
-    background:#ff6b81;
-    color:white;
+  button {
+    padding: 12px 24px;
+    font-size: 18px;
+    margin-top: 15px;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background: #ff6b81;
+    color: white;
+    font-weight: bold;
+    display: block;
+    width: 100%;
+    transition: background 0.2s;
   }
-  button:hover{
-    background:#ff4d6d;
+  button:hover {
+    background: #ff4d6d;
   }
-  #resultat{
-    margin-top:15px;
-    font-size:18px;
-    font-weight:bold;
-    min-height: 25px;
+  .story-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #444;
+    white-space: pre-line;
+  }
+  .story-img {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    margin: 15px 0;
+  }
+  #resultat {
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
   }
 </style>
 </head>
@@ -81,122 +94,204 @@
 
 <h1 class="titre-principal">🔎 Chasse au trésor de Malika ❤️</h1>
 
-<div class="container">
-
+<div class="container" id="main-container">
+  
+  <!-- Question Départ -->
   <div class="card">
-    <h2>Énigme 🔑</h2>
-    <p class="enigme-text">Difficile à ouvrir, je tiens en 3 lettres...</p>
-  </div>
+    <h2>Question 🚌</h2>
+    <p style="font-size: 17px; font-weight: bold; color: #555;">Qu’est ce que je vais faire pendant mes 11 heures de bus ?</p>
+    
+    <label class="qcm-option">
+      <input type="radio" name="bus_qcm" value="paysage"> Regarder le paysage
+    </label>
+    <label class="qcm-option">
+      <input type="radio" name="bus_qcm" value="musique"> Écouter de la musique
+    </label>
+    <label class="qcm-option">
+      <input type="radio" name="bus_qcm" value="fromage"> Manger du fromage
+    </label>
+    <label class="qcm-option">
+      <input type="radio" name="bus_qcm" value="dormir"> Dormir
+    </label>
+    <label class="qcm-option">
+      <input type="radio" name="bus_qcm" value="pea"> Ouvrir mon PEA
+    </label>
 
-  <div class="final-box">
-    <h2>Entre la réponse 🔐</h2>
-    <input id="code" placeholder="Réponse en 3 lettres...">
-    <br>
-    <button onclick="verifierEnigme1()">Valider</button>
+    <button onclick="verifierQCM()">Valider</button>
     <div id="resultat"></div>
   </div>
 
 </div>
 
 <script>
-// Permet de valider avec la touche Entrée sur la première énigme
-document.getElementById("code").addEventListener("keyup", function(event){
-  if(event.key === "Enter"){ verifierEnigme1(); }
-});
+function verifierQCM() {
+  const reponse = document.querySelector('input[name="bus_qcm"]:checked');
+  const resDiv = document.getElementById("resultat");
+  
+  if (!reponse) {
+    resDiv.innerHTML = "⚠️ Choisis une réponse !";
+    resDiv.style.color = "orange";
+    return;
+  }
 
-// Normalise les saisies de date (gère espaces, tirets et slashes)
-function normaliserDate(str){
-  return str.trim().replace(/\s+/g,"").replace(/-/g,"/");
-}
-
-// 1. Vérification Énigme PEA
-function verifierEnigme1(){
-  const val = document.getElementById("code").value.toLowerCase().trim();
-  if(val === "pea"){
-    afficherPhoto1();
+  if (reponse.value === "pea") {
+    afficherIntroHistoire();
   } else {
-    document.getElementById("resultat").innerHTML = "❌ Essaie encore";
-    document.getElementById("resultat").style.color = "red";
+    resDiv.innerHTML = "❌ Essaie encore !";
+    resDiv.style.color = "red";
   }
 }
 
-// 2. Affichage Photo 1 : ABBA
-function afficherPhoto1(){
-  document.querySelector(".container").innerHTML = `
+function afficherIntroHistoire() {
+  const container = document.getElementById("main-container");
+  container.innerHTML = `
     <div class="final-box">
-      <img src="abba.png" alt="photo souvenir ABBA" style="width:100%; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
-      <h2 style="margin-top:20px;">Quelle est la date de cette photo ?</h2>
-      <input id="date1" placeholder="jj/mm/aaaa">
-      <br>
-      <button onclick="verifierDate1()">Valider</button>
-      <div id="resultatDate1"></div>
-    </div>
-  `;
-  document.getElementById("date1").addEventListener("keyup", function(event){
-    if(event.key === "Enter"){ verifierDate1(); }
-  });
-}
-
-// Vérification Date ABBA (07/10/2023)
-function verifierDate1(){
-  const val = normaliserDate(document.getElementById("date1").value);
-  if(val === "07/10/2023" || val === "7/10/2023"){
-    afficherEncouragement1();
-  } else {
-    document.getElementById("resultatDate1").innerHTML = "❌ Essaie encore";
-    document.getElementById("resultatDate1").style.color = "red";
-  }
-}
-
-// Intermédiaire 1
-function afficherEncouragement1(){
-  document.querySelector(".container").innerHTML = `
-    <div class="final-box">
-      <div style="font-size:60px;">🌟</div>
-      <h1>Bravo Malika !</h1>
-      <p style="font-size:18px;">Bien joué ❤️</p>
-      <button onclick="afficherPhoto2()">Continuer l'aventure ➜</button>
+      <div style="font-size:50px; text-align:center;">👏</div>
+      <h2 style="text-align:center; color:#ff6b81;">Bravo !</h2>
+      <p style="font-size:16px; line-height:1.5;">Tu ne te souviens plus pourquoi il faut ouvrir ce vieux truc ? Dans ce cas, je t'invite à découvrir l'histoire :<br><br><strong style="font-size:18px;">« MALIKA et le PEA »</strong></p>
+      <button onclick="afficherPartie1()">Commencer la lecture ➜</button>
     </div>
   `;
 }
 
-// 3. Affichage Photo 2 : JMJ
-function afficherPhoto2(){
-  document.querySelector(".container").innerHTML = `
-    <div class="final-box">
-      <img src="jmj.png" alt="photo souvenir JMJ" style="width:100%; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
-      <h2 style="margin-top:20px;">Quelle est la date de cette photo ?</h2>
-      <input id="date2" placeholder="jj/mm/aaaa">
-      <br>
-      <button onclick="verifierDate2()">Valider</button>
-      <div id="resultatDate2"></div>
+function afficherPartie1() {
+  const container = document.getElementById("main-container");
+  container.innerHTML = `
+    <div class="card">
+      <h2>📖 Partie 1</h2>
+      <div class="story-text">
+Il était une fois Malika et les PEA.
+
+Imaginons un monde où Malika faisait plein de gardes, où Cos lui prêtait l’appartement de sa grand-mère à Paris, où Guillaume lui offrait tout plein d’habits, où les restaurants étaient gratuits à Paris, où sa coloc la souris s’occupait de faire ses courses et de cuisiner de merveilleux petits plats, et où Malika ne cessait de trébucher sur des billets de 50 € en sortant de son métro préféré : <strong>BARBÈS - ROCHECHOUART</strong>.
+
+Arrive la fin de l’année et Malika a alors amassé : <strong>50 000 euros</strong>.
+
+Elle s’empresse donc d’ouvrir une petite cagnotte pour faire des voyages, une autre pour faire des cadeaux à Guillaume, une 3ème pour aider des associations, et une 4ème pour investir dans la boîte pleine de sens : <em>JB by Guillaume & Alex</em>.
+
+Malgré tout cela, il lui reste : <strong>30 000 euros !</strong>
+      </div>
+      <img src="partie1.jpg" alt="Illustration Partie 1" class="story-img">
+      <button onclick="afficherPartie2()">Continuer la lecture ➜</button>
     </div>
   `;
-  document.getElementById("date2").addEventListener("keyup", function(event){
-    if(event.key === "Enter"){ verifierDate2(); }
-  });
+  window.scrollTo(0,0);
 }
 
-// Vérification Date JMJ (06/08/2023)
-function verifierDate2(){
-  const val = normaliserDate(document.getElementById("date2").value);
-  if(val === "06/08/2023" || val === "6/8/2023" || val === "06/8/2023" || val === "6/08/2023"){
-    afficherFin();
-  } else {
-    document.getElementById("resultatDate2").innerHTML = "❌ Essaie encore";
-    document.getElementById("resultatDate2").style.color = "red";
-  }
-}
+function afficherPartie2() {
+  const container = document.getElementById("main-container");
+  container.innerHTML = `
+    <div class="card">
+      <h2>📖 Partie 2</h2>
+      <div class="story-text">
+« Chouette », se dit alors Élo le chameau, « je vais les garder sur mon petit compte en banque CIC afin d’acheter un appartement à mes 30 ans. Je me suis renseignée : avec 30 000 euros, je peux acheter l’appartement de mes rêves, cosy, climatisé, lumineux et au beau milieu du 32e arrondissement parisien qui, selon un voisin rencontré dans FlixBus, est "extrêmement agréable à vivre". »
 
-// Écran de réussite final
-function afficherFin(){
-  document.querySelector(".container").innerHTML = `
-    <div class="final-box">
-      <div style="font-size:60px;">🎉</div>
-      <h1>Félicitations Malika !</h1>
-      <p style="font-size:18px;">Tu as résolu toutes les énigmes comme une cheffe ❤️. Tu peux ouvrir l'enveloppe C.C et C.C2 - A OUVRIR EN CACHETTE....</p>
+Ce qui fut dit fut fait.
+
+À l’âge de ses 30 ans, Éloïse décide alors d’acheter l’appartement de ses rêves. Elle arrive chez le vendeur d’appartement. Et là… oh misère ! L’appartement qu’elle avait repéré depuis 5 ans ne coûte plus 30 000 mais bien <strong>40 000 € !</strong> Quelle arnaque ! « Comment vais-je faire ? » se demande alors Élo l’asticot, et surtout « Comment ça se fait ? ». Très énervée, elle appelle alors son papa adoré qui lui dit :
+
+« Tout doux Lilou, ce phénomène a un nom : c’est l’inflation. Je t’envoie un article Sud Ouest. »
+« M’en fiche, je voulais acheter mon appart ! »
+
+Après une phase de boudage intensif, elle décide d’ouvrir l’article sur sa boîte mail <em>lilou.galichon.du17&gus_mon-meilleur_cousin_coeur_cœur</em> pour lire l’article de son papa.
+
+En mettant à profit son énorme cerveau de 400e/10 000 médecins, elle comprend alors que 30 000 euros permettent d’acheter 28 000 baguettes aujourd’hui, mais seulement 25 000 dans 5 ans… C’est ce qu’on appelle l’inflation. Ainsi, garder de l’argent qui dort sur son compte en banque revient à demander à son banquier de jeter quelques euros tous les jours à la poubelle ! <strong>PAS COOL.</strong>
+      </div>
+      <img src="partie2.jpg" alt="Illustration Partie 2" class="story-img">
+      <button onclick="afficherPartie3()">Continuer la lecture ➜</button>
     </div>
   `;
+  window.scrollTo(0,0);
+}
+
+function afficherPartie3() {
+  const container = document.getElementById("main-container");
+  container.innerHTML = `
+    <div class="card">
+      <h2>📖 Partie 3</h2>
+      <div class="story-text">
+« Alors que faut-il faire ? » se demande Élo l’écolo ! Soudain, un éclair illumine ses yeux géants, son cerveau bouillonne si fort que dégringole une bonne demi-douzaine de quelques gouttes de sueur de GFD car, ne l’oublions pas, nous sommes en période de canicule :
+
+« JE SAIS ! Je vais mettre l’argent sur un Livret A car chaque année ça va me rapporter 1,7 %, maman et Papilou m’en ont créé un ! »
+« Bonne idée, mais il y a mieux : <strong>le PEA !</strong> » lui répond Piki joli le grizzly !
+« Pfff non, ça me fait peur ce truc, j’y connais rien en plus… À quoi ça sert ? »
+« Ça permet d’acheter des actions (un petit petit petit bout des 500 meilleures entreprises américaines) qui, en moyenne depuis 50 ans, gagnent 10 % de leur valeur par an ! »
+
+« Super ! » se dit Malika. « Je vais mettre 100 euros et au bout d’un an j’aurai donc gagné 10 euros. Je les retirerai et j’irai m’acheter un bon fromage chez le fromager !! »
+
+Ce qui fut dit fut fait : Éloïse ouvrit son PEA et récupéra ses 110 euros 1 an plus tard. Elle arrive alors chez le fromager et achète « 5 euros de bleu, 2 euros de comté et 3 euros de chèvre ». Elle rentre chez elle, met tout dans son mixeur préféré, laisse tout ça mariner une bonne dizaine de jours à 40 degrés avant de boulotter gentiment son fromage avec son amie la souris. 
+
+Alors arrive le mois de mai et… <strong>LE FISC frappe à sa porte !</strong>
+
+« Bonjour madame Malika, vous devez nous rendre le fromage de chèvre ! »
+« Impossible ! C’est mon fromage préféré et en plus je l’ai déjà mangé ! »
+      </div>
+      <img src="partie3.jpg" alt="Illustration Partie 3" class="story-img">
+      <button onclick="afficherPartie4()">Continuer la lecture ➜</button>
+    </div>
+  `;
+  window.scrollTo(0,0);
+}
+
+function afficherPartie4() {
+  const container = document.getElementById("main-container");
+  container.innerHTML = `
+    <div class="card">
+      <h2>📖 Partie 4</h2>
+      <div class="story-text">
+Nous voilà bien…
+« Mais qui sont ces gens pour voler mon fromage ? » se dit-elle !! Elle décide alors de faire des recherches sur son ordinateur HP chargé à 100 % et qui attend gentiment dans sa housse pleine de cœurs car, ne l’oublions pas, à Éloïse « le encantan las películas románticas ».
+
+« QUI QUE VOUS SOYEZ, QUEL QUE SOIT CE QUE VOUS AVEZ GAGNÉ CETTE ANNÉE AVEC VOTRE SALAIRE, si vous avez gagné de l’argent avec la bourse -> 30 % vont à l’État. » 
+
+Pourquoi ? Pour qu’Éloïse puisse soigner les Indiens de Saint-Denis qui font des PMA en Inde et reviennent gentiment quand la situation se complique.
+
+« Ça alors, » se dit-elle, « ce n’est vraiment pas du jeu ! Je vais devoir recracher mon fromage de chèvre comme quand j’avais craché le salted coffee sur Piki… »
+
+Soudain, un petit astérisque clignote sur le site ! « Merdeeeeeeee, un virus ! Je suis sûre que Guillaume a encore regardé Zootopie en streaming sans mon autorisation. Me voilà bien… »
+Elle s’approche doucement de l’écran, rassemble tout son courage et décide de cliquer sur l’étoile :
+
+<strong>« CLIC ! »</strong>
+
+(Malika retient son souffle : son ordi va-t-il exploser…)
+      </div>
+      <img src="partie4.jpg" alt="Illustration Partie 4" class="story-img">
+      <button onclick="afficherPartie5()">Continuer la lecture ➜</button>
+    </div>
+  `;
+  window.scrollTo(0,0);
+}
+
+function afficherPartie5() {
+  const container = document.getElementById("main-container");
+  container.innerHTML = `
+    <div class="card">
+      <h2>📖 Partie 5</h2>
+      <div class="story-text">
+Soudain, l’écran défile à toute allure et un message apparaît : « Si vous avez gagné de l’argent grâce à la bourse via un PEA, vous devez donner non pas 30 % mais <strong>17 % à l’État</strong>. »
+
+« SUPER ! » SE DIT-ELLE. « Je suis joie car je ne devrai régurgiter que quelques grammes de fromage de chèvre pour le méchant monsieur des impôts ! »
+En voilà une bonne nouvelle ! Malika, folle de joie, prépare son sac en seulement 471 minutes et file aux impôts de Paris ! « Menteur ! » s’exclame-t-elle en voyant le monsieur qui était venu toquer à sa porte. « Vous m’avez dit que je vous devais 3 euros, mais en réalité c’est 1,70 €, ce qui correspond à 23 grammes de fromage de chèvre et pas un de plus ! »
+
+Stupéfait, le monsieur des impôts lui répond :
+« Ah non, pas du tout madame, car pour bénéficier de cette règle des 17 % vs 30 %, votre PEA devait être ouvert depuis au moins 5 ans. Or, vous l’avez ouvert l’année dernière, si je ne me trompe. »
+
+« Mais si je l’avais juste ouvert — en mettant 0 centime dessus — quand j’avais 25 ans, alors j’aurais eu le droit aux 17 % ? »
+
+« Oui, madame. »
+
+Dépitée, Malika décide alors de se rendre et régurgite les 46 grammes de fromage qui dormaient paisiblement dans son ventre…
+« Ahhhh si j’avais écouté Piki… » se dit-elle sur le chemin du retour. « Dire que j’aurais pu gagner jusqu’à 23 grammes de fromage de chèvre… »
+      </div>
+      
+      <img src="partie5.jpg" alt="Illustration Partie 5" class="story-img">
+
+      <div style="background: #fff0f3; padding: 15px; border-radius: 12px; border-left: 5px solid #ff6b81; margin-top: 15px;">
+        <h3 style="margin: 0 0 5px 0; color: #ff4d6d;">Moralité de la fable 💡</h3>
+        <p style="margin: 0; font-weight: bold; font-size: 18px; color: #333;">LP (L'ouvrir au Plus vite / Prendre date !)</p>
+      </div>
+    </div>
+  `;
+  window.scrollTo(0,0);
 }
 </script>
 </body>
