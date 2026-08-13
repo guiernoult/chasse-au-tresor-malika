@@ -53,7 +53,7 @@
     margin-right: 12px;
     transform: scale(1.2);
   }
-  button {
+  button, .btn-action {
     padding: 12px 24px;
     font-size: 18px;
     margin-top: 15px;
@@ -66,9 +66,24 @@
     display: block;
     width: 100%;
     transition: background 0.2s;
+    text-align: center;
+    box-sizing: border-box;
   }
-  button:hover {
+  button:hover, .btn-action:hover {
     background: #ff4d6d;
+  }
+  .nav-buttons {
+    margin-top: 20px;
+  }
+  .btn-nav {
+    background: #6c757d;
+    font-size: 14px;
+    padding: 8px 15px;
+    width: auto;
+    display: inline-block;
+  }
+  .btn-nav:hover {
+    background: #5a6268;
   }
   .story-text {
     font-size: 16px;
@@ -82,11 +97,76 @@
     box-shadow: 0 5px 15px rgba(0,0,0,0.15);
     margin: 15px 0;
   }
-  #resultat {
+  #resultat, #resultat-pea, #resultat-enigme {
     margin-top: 15px;
     font-size: 16px;
     font-weight: bold;
     text-align: center;
+  }
+
+  /* Accordéon FAQ */
+  .faq-item {
+    border: 2px solid #ee9ca7;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .faq-question {
+    background: #fff0f3;
+    padding: 15px;
+    font-weight: bold;
+    color: #ff4d6d;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+  }
+  .faq-question:hover {
+    background: #ffe6ea;
+  }
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease;
+    padding: 0 15px;
+    color: #444;
+    font-size: 15px;
+    line-height: 1.5;
+    background: #ffffff;
+  }
+  .faq-item.active .faq-answer {
+    padding: 15px;
+    max-height: 300px;
+  }
+  .faq-item.active .faq-toggle {
+    transform: rotate(180deg);
+  }
+  .faq-toggle {
+    transition: transform 0.3s ease;
+  }
+
+  /* Floutage pour l'énigme */
+  .blurred {
+    filter: blur(8px);
+    user-select: none;
+    pointer-events: none;
+    transition: filter 0.5s ease;
+  }
+  .unblurred {
+    filter: blur(0);
+    pointer-events: auto;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: 2px solid #ee9ca7;
+    border-radius: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
   }
 </style>
 </head>
@@ -149,9 +229,15 @@ function afficherIntroHistoire() {
       <div style="font-size:50px; text-align:center;">👏</div>
       <h2 style="text-align:center; color:#ff6b81;">Bravo !</h2>
       <p style="font-size:16px; line-height:1.5;">Tu ne te souviens plus pourquoi il faut ouvrir ce vieux truc ? Dans ce cas, je t'invite à découvrir l'histoire :<br><br><strong style="font-size:18px;">« MALIKA et le PEA »</strong></p>
+      
       <button onclick="afficherPartie1()">Commencer la lecture ➜</button>
+      
+      <div class="nav-buttons">
+        <button class="btn-nav" onclick="location.reload()">⬅️ Retour au QCM</button>
+      </div>
     </div>
   `;
+  window.scrollTo(0,0);
 }
 
 function afficherPartie1() {
@@ -171,7 +257,12 @@ Elle s’empresse donc d’ouvrir une petite cagnotte pour faire des voyages, un
 Malgré tout cela, il lui reste : <strong>30 000 euros !</strong>
       </div>
       <img src="partie1.jpg" alt="Illustration Partie 1" class="story-img">
+      
       <button onclick="afficherPartie2()">Continuer la lecture ➜</button>
+
+      <div class="nav-buttons">
+        <button class="btn-nav" onclick="afficherIntroHistoire()">⬅️ Précédent</button>
+      </div>
     </div>
   `;
   window.scrollTo(0,0);
@@ -197,7 +288,12 @@ Après une phase de boudage intensif, elle décide d’ouvrir l’article sur sa
 En mettant à profit son énorme cerveau de 400e/10 000 médecins, elle comprend alors que 30 000 euros permettent d’acheter 28 000 baguettes aujourd’hui, mais seulement 25 000 dans 5 ans… C’est ce qu’on appelle l’inflation. Ainsi, garder de l’argent qui dort sur son compte en banque revient à demander à son banquier de jeter quelques euros tous les jours à la poubelle ! <strong>PAS COOL.</strong>
       </div>
       <img src="partie2.jpg" alt="Illustration Partie 2" class="story-img">
+      
       <button onclick="afficherPartie3()">Continuer la lecture ➜</button>
+
+      <div class="nav-buttons">
+        <button class="btn-nav" onclick="afficherPartie1()">⬅️ Précédent</button>
+      </div>
     </div>
   `;
   window.scrollTo(0,0);
@@ -226,7 +322,12 @@ Alors arrive le mois de mai et… <strong>LE FISC frappe à sa porte !</strong>
 « Impossible ! C’est mon fromage préféré et en plus je l’ai déjà mangé ! »
       </div>
       <img src="partie3.jpg" alt="Illustration Partie 3" class="story-img">
+      
       <button onclick="afficherPartie4()">Continuer la lecture ➜</button>
+
+      <div class="nav-buttons">
+        <button class="btn-nav" onclick="afficherPartie2()">⬅️ Précédent</button>
+      </div>
     </div>
   `;
   window.scrollTo(0,0);
@@ -255,7 +356,12 @@ Elle s’approche doucement de l’écran, rassemble tout son courage et décide
 (Malika retient son souffle : son ordi va-t-il exploser…)
       </div>
       <img src="partie4.jpg" alt="Illustration Partie 4" class="story-img">
+      
       <button onclick="afficherPartie5()">Continuer la lecture ➜</button>
+
+      <div class="nav-buttons">
+        <button class="btn-nav" onclick="afficherPartie3()">⬅️ Précédent</button>
+      </div>
     </div>
   `;
   window.scrollTo(0,0);
@@ -285,13 +391,182 @@ Dépitée, Malika décide alors de se rendre et régurgite les 46 grammes de fro
       
       <img src="partie5.jpg" alt="Illustration Partie 5" class="story-img">
 
-      <div style="background: #fff0f3; padding: 15px; border-radius: 12px; border-left: 5px solid #ff6b81; margin-top: 15px;">
+      <div style="background: #fff0f3; padding: 15px; border-radius: 12px; border-left: 5px solid #ff6b81; margin-top: 15px; margin-bottom: 20px;">
         <h3 style="margin: 0 0 5px 0; color: #ff4d6d;">Moralité de la fable 💡</h3>
-        <p style="margin: 0; font-weight: bold; font-size: 18px; color: #333;">LP (L'ouvrir au Plus vite / Prendre date !)</p>
+        <p style="margin: 0; font-weight: bold; font-size: 18px; color: #333;">LP</p>
+      </div>
+
+      <button onclick="afficherFAQ()">Continuer l'énigme ➜</button>
+
+      <div class="nav-buttons">
+        <button class="btn-nav" onclick="afficherPartie4()">⬅️ Précédent</button>
       </div>
     </div>
   `;
   window.scrollTo(0,0);
+}
+
+function toggleFAQ(element) {
+  const item = element.parentElement;
+  item.classList.toggle("active");
+}
+
+function afficherFAQ() {
+  const container = document.getElementById("main-container");
+  container.innerHTML = `
+    <div class="card">
+      <h2>❓ Des questions avant de se lancer ?</h2>
+      <p style="color:#666; font-size:14px; margin-bottom:20px;">Clique sur les questions pour voir les réponses !</p>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          Ca veut dire quoi “ouvrir un PEA” car j’ai deja un compte bourso je crois ?
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          C’est simplement répondre à quelques questions (nom prénom adresse) et suite à ça quand tu ouvriras ton appli boursobank tu auras 2 lignes - une ligne compte courant et une ligne PEA.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          C’est vrai que je dois mettre 10 euros minimum lors de l’ouverture ?
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Oui, bourso va te demander de déposer 10 € de ta poche.<br>
+          Cet argent reste sur un sous-compte "portefeuille" (en cash). Tu n'es pas du tout obligée d'acheter des actions avec !<br>
+          L'intérêt ? Ça permet de lancer le chrono des 5 ans pour payer moins d'impôts plus tard, sans prendre aucun risque aujourd'hui.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          Je peux le faire de mon tel ou c’est que de mon ordi ?
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Ça se fait très bien de son tel (et encore mieux dans un bus).
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          Pourquoi je le fait sur BoursoBank et pas ma banque ?
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Car BoursoBank est la banque qui prend le moins de frais (pour te dire Dona a choisi cette banque -> ça veut tout dire !).
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          Quand je vais l’ouvrir, je fais quoi si je sais pas répondre à une question ?
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          ChatGPT est ton ami (et cette vidéo aussi : <a href="https://www.youtube.com/watch?v=DD7KCicwCi0" target="_blank" style="color:#ff6b81;">Regarder le tuto YouTube</a>).<br><br>
+          Sinon tu peux m’envoyer un message mais normalement ça se fait très bien !
+        </div>
+      </div>
+
+      <button style="margin-top:25px; background:#2ed573;" onclick="afficherBravoPEA()">JE L'AI OUVERT ! 🎉</button>
+
+      <div class="nav-buttons">
+        <button class="btn-nav" onclick="afficherPartie5()">⬅️ Précédent</button>
+      </div>
+    </div>
+  `;
+  window.scrollTo(0,0);
+}
+
+function afficherBravoPEA() {
+  const container = document.getElementById("main-container");
+  container.innerHTML = `
+    <div class="final-box" style="text-align:center;">
+      <div style="font-size:60px;">🥳</div>
+      <h2 style="color:#ff6b81;">Bravo Malika !</h2>
+      <p style="font-size:18px; line-height:1.5; color:#333;">Tu peux continuer l'énigme du jour !</p>
+      <button onclick="afficherVerificationPEA()">Cliquer ici pour continuer ➜</button>
+
+      <div class="nav-buttons">
+        <button class="btn-nav" onclick="afficherFAQ()">⬅️ Précédent</button>
+      </div>
+    </div>
+  `;
+  window.scrollTo(0,0);
+}
+
+function afficherVerificationPEA() {
+  const container = document.getElementById("main-container");
+  container.innerHTML = `
+    <div class="card">
+      <h2>🛑 EHHH pas si vite Malika !</h2>
+      <p style="font-size: 16px; color: #444;">Es-tu sûre que ton PEA est bien ouvert avant de continuer ? 😉</p>
+      
+      <label style="font-weight:bold; color:#333; display:block; margin-top:15px;">
+        Rentre le numéro de compte de ton PEA ici (11 chiffres) :
+      </label>
+      <input type="text" id="num_pea" placeholder="Ex: 12345678901" maxlength="11">
+      <button onclick="verifierNumeroPEA()">Débloquer l'énigme 🔓</button>
+      
+      <div id="resultat-pea"></div>
+
+      <!-- Énigme Floutée -->
+      <div id="zone-enigme" class="blurred" style="margin-top: 30px; border-top: 2px dashed #ee9ca7; padding-top: 20px;">
+        <h2 style="color:#ff6b81;">🧩 L'Énigme du Jour</h2>
+        <div class="story-text" style="background:#fff0f3; padding:15px; border-radius:10px; border-left:4px solid #ff6b81;">
+          Je porte des boucles d’oreilles en cœurs dorée et perforée et très certainement une chevalière…. Normal ! J’adore les bijoux. Je ne connais ni Eloïse, ni Guillaume - mais eux en savent déjà pas mal sur moi.<br><br>
+          <strong>Mon nom de famille :</strong>
+        </div>
+
+        <input type="text" id="nom_famille" placeholder="Ton nom de famille..." style="margin-top:15px;">
+        <button onclick="verifierNomFamille()">Valider l'énigme</button>
+        <div id="resultat-enigme"></div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn-nav" onclick="afficherBravoPEA()">⬅️ Précédent</button>
+      </div>
+    </div>
+  `;
+  window.scrollTo(0,0);
+}
+
+function verifierNumeroPEA() {
+  const input = document.getElementById("num_pea").value.trim();
+  const resDiv = document.getElementById("resultat-pea");
+  const zoneEnigme = document.getElementById("zone-enigme");
+
+  // Vérifie si le champ contient exactement 11 chiffres
+  const regex11Chiffres = /^\d{11}$/;
+
+  if (regex11Chiffres.test(input)) {
+    resDiv.innerHTML = "✅ Numéro valide ! L'énigme est débloquée ci-dessous.";
+    resDiv.style.color = "green";
+    zoneEnigme.classList.remove("blurred");
+    zoneEnigme.classList.add("unblurred");
+  } else {
+    resDiv.innerHTML = "❌ Hum, il semblerait que ce numéro ne corresponde pas à celui de BoursoBank...";
+    resDiv.style.color = "red";
+    zoneEnigme.classList.remove("unblurred");
+    zoneEnigme.classList.add("blurred");
+  }
+}
+
+function verifierNomFamille() {
+  const input = document.getElementById("nom_famille").value.trim().toLowerCase();
+  const resDiv = document.getElementById("resultat-enigme");
+
+  // Nettoyage pour accepter 'hot-bastin', 'hot bastin', etc.
+  if (input === "hot-bastin" || input === "hot bastin" || input === "hotbastin") {
+    resDiv.innerHTML = "🎉 BRAVO ! Tu as trouvé la bonne réponse ! 💖";
+    resDiv.style.color = "green";
+  } else {
+    resDiv.innerHTML = "❌ Essaie encore !";
+    resDiv.style.color = "red";
+  }
 }
 </script>
 </body>
