@@ -97,7 +97,7 @@
     box-shadow: 0 5px 15px rgba(0,0,0,0.15);
     margin: 15px 0;
   }
-  #resultat, #resultat-pea, #resultat-enigme {
+  #resultat, #resultat-pea, #resultat-enigme1, #resultat-enigme2, #resultat-enigme3 {
     margin-top: 15px;
     font-size: 16px;
     font-weight: bold;
@@ -167,6 +167,73 @@
     border-radius: 10px;
     font-size: 16px;
     box-sizing: border-box;
+  }
+
+  /* Animation du cadeau */
+  .gift-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  .gift-box {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background: #ff4d6d;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+  }
+  .gift-box:hover {
+    transform: scale(1.05);
+  }
+  .gift-ribbon-v {
+    position: absolute;
+    left: 42px;
+    width: 16px;
+    height: 100%;
+    background: #ffd166;
+  }
+  .gift-ribbon-h {
+    position: absolute;
+    top: 42px;
+    width: 100%;
+    height: 16px;
+    background: #ffd166;
+  }
+  .gift-lid {
+    position: absolute;
+    top: -15px;
+    left: -5px;
+    width: 110px;
+    height: 25px;
+    background: #ff3355;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.6s ease, opacity 0.6s ease;
+  }
+  .gift-box.open .gift-lid {
+    transform: translateY(-80px) rotate(-20deg);
+    opacity: 0;
+  }
+  .gift-message {
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.6s ease;
+    margin-top: 25px;
+    background: #fff0f3;
+    border: 3px dashed #ff4d6d;
+    padding: 20px;
+    border-radius: 15px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #ff4d6d;
+  }
+  .gift-box.open + .gift-message {
+    opacity: 1;
+    transform: scale(1);
   }
 </style>
 </head>
@@ -506,24 +573,51 @@ function afficherVerificationPEA() {
       <p style="font-size: 16px; color: #444;">Es-tu sûre que ton PEA est bien ouvert avant de continuer ? 😉</p>
       
       <label style="font-weight:bold; color:#333; display:block; margin-top:15px;">
-        Rentre le numéro de compte de ton PEA ici (11 chiffres) :
+        Rentre le numéro de compte de ton PEA ici :
       </label>
-      <input type="text" id="num_pea" placeholder="Ex: 12345678901" maxlength="11">
+      <input type="text" id="num_pea" placeholder="Ton numéro de compte...">
       <button onclick="verifierNumeroPEA()">Débloquer l'énigme 🔓</button>
       
       <div id="resultat-pea"></div>
 
       <!-- Énigme Floutée -->
       <div id="zone-enigme" class="blurred" style="margin-top: 30px; border-top: 2px dashed #ee9ca7; padding-top: 20px;">
-        <h2 style="color:#ff6b81;">🧩 L'Énigme du Jour</h2>
+        <h2 style="color:#ff6b81;">🧩 Énigme 1</h2>
         <div class="story-text" style="background:#fff0f3; padding:15px; border-radius:10px; border-left:4px solid #ff6b81;">
           Je porte des boucles d’oreilles en cœurs dorée et perforée et très certainement une chevalière…. Normal ! J’adore les bijoux. Je ne connais ni Eloïse, ni Guillaume - mais eux en savent déjà pas mal sur moi.<br><br>
           <strong>Mon nom de famille :</strong>
         </div>
 
         <input type="text" id="nom_famille" placeholder="Ton nom de famille..." style="margin-top:15px;">
-        <button onclick="verifierNomFamille()">Valider l'énigme</button>
-        <div id="resultat-enigme"></div>
+        <button onclick="verifierEnigme1()">Valider l'énigme 1</button>
+        <div id="resultat-enigme1"></div>
+
+        <!-- Énigme 2 (cachée par défaut) -->
+        <div id="zone-enigme2" style="display:none; margin-top: 30px; border-top: 2px dashed #ee9ca7; padding-top: 20px;">
+          <h2 style="color:#ff6b81;">🧩 Énigme 2</h2>
+          <div class="story-text" style="background:#fff0f3; padding:15px; border-radius:10px; border-left:4px solid #ff6b81;">
+            <strong>Iletville</strong>
+          </div>
+
+          <input type="text" id="reponse_enigme2" placeholder="Ex: ABC" maxlength="3" style="margin-top:15px; text-transform:uppercase; letter-spacing: 5px; text-align:center;">
+          <button onclick="verifierEnigme2()">Valider l'énigme 2</button>
+          <div id="resultat-enigme2"></div>
+        </div>
+
+        <!-- Énigme 3 (cachée par défaut) -->
+        <div id="zone-enigme3" style="display:none; margin-top: 30px; border-top: 2px dashed #ee9ca7; padding-top: 20px;">
+          <h2 style="color:#ff6b81;">🧩 Énigme 3</h2>
+          <div class="story-text" style="background:#fff0f3; padding:15px; border-radius:10px; border-left:4px solid #ff6b81;">
+            Je commence par un ordre qu’on dit aux chiens qui rentre (sans permission) dans la maison de la paroisse de los Santos desposorios.<br><br>
+            Rajoutez moi un espace puis un R puis l’anglicisme d’un liquide visqueux dont raffole l’animal qui pourrait bien s’apparenter à un prêtre bolivien.<br><br>
+            <strong>Mon tout aime écrire.</strong>
+          </div>
+
+          <input type="text" id="reponse_enigme3" placeholder="Ta réponse..." style="margin-top:15px;">
+          <button onclick="verifierEnigme3()">Valider l'énigme 3</button>
+          <div id="resultat-enigme3"></div>
+        </div>
+
       </div>
 
       <div class="nav-buttons">
@@ -539,7 +633,7 @@ function verifierNumeroPEA() {
   const resDiv = document.getElementById("resultat-pea");
   const zoneEnigme = document.getElementById("zone-enigme");
 
-  // Vérifie si le champ contient exactement 11 chiffres
+  // Vérifie si le champ contient exactement 11 chiffres en arrière-plan
   const regex11Chiffres = /^\d{11}$/;
 
   if (regex11Chiffres.test(input)) {
@@ -555,18 +649,76 @@ function verifierNumeroPEA() {
   }
 }
 
-function verifierNomFamille() {
+function verifierEnigme1() {
   const input = document.getElementById("nom_famille").value.trim().toLowerCase();
-  const resDiv = document.getElementById("resultat-enigme");
+  const resDiv = document.getElementById("resultat-enigme1");
+  const zone2 = document.getElementById("zone-enigme2");
 
-  // Nettoyage pour accepter 'hot-bastin', 'hot bastin', etc.
   if (input === "hot-bastin" || input === "hot bastin" || input === "hotbastin") {
-    resDiv.innerHTML = "🎉 BRAVO ! Tu as trouvé la bonne réponse ! 💖";
+    resDiv.innerHTML = "🎉 BRAVO ! Tu peux continuer sur la 2ème énigme !";
     resDiv.style.color = "green";
+    zone2.style.display = "block";
+    zone2.scrollIntoView({ behavior: 'smooth' });
   } else {
     resDiv.innerHTML = "❌ Essaie encore !";
     resDiv.style.color = "red";
   }
+}
+
+function verifierEnigme2() {
+  const input = document.getElementById("reponse_enigme2").value.trim().toUpperCase();
+  const resDiv = document.getElementById("resultat-enigme2");
+  const zone3 = document.getElementById("zone-enigme3");
+
+  if (input === "AIX") {
+    resDiv.innerHTML = "🎉 BRAVO ! Tu peux continuer sur la 3ème énigme !";
+    resDiv.style.color = "green";
+    zone3.style.display = "block";
+    zone3.scrollIntoView({ behavior: 'smooth' });
+  } else {
+    resDiv.innerHTML = "❌ Essaie encore !";
+    resDiv.style.color = "red";
+  }
+}
+
+function verifierEnigme3() {
+  const input = document.getElementById("reponse_enigme3").value.trim().toLowerCase();
+  const resDiv = document.getElementById("resultat-enigme3");
+
+  if (input === "sally rooney") {
+    resDiv.innerHTML = `
+      <div style="margin-top:20px;">
+        <p style="color:green; font-size:18px;">🎉 BRAVO ! Tu as résolu toutes les énigmes ! 🎉</p>
+        <button style="background:#ff4757; font-size:20px;" onclick="ouvrirCadeau()">Découvrir mon cadeau 🎁</button>
+        
+        <div class="gift-container" id="gift-container" style="display:none;">
+          <div class="gift-box" id="gift-box" onclick="animerCadeau()">
+            <div class="gift-lid"></div>
+            <div class="gift-ribbon-v"></div>
+            <div class="gift-ribbon-h"></div>
+          </div>
+          <div class="gift-message" id="gift-message">
+            ✉️ Tu peux ouvrir l'enveloppe P !
+          </div>
+        </div>
+      </div>
+    `;
+    resDiv.scrollIntoView({ behavior: 'smooth' });
+  } else {
+    resDiv.innerHTML = "❌ Essaie encore !";
+    resDiv.style.color = "red";
+  }
+}
+
+function ouvrirCadeau() {
+  const giftContainer = document.getElementById("gift-container");
+  giftContainer.style.display = "flex";
+  giftContainer.scrollIntoView({ behavior: 'smooth' });
+}
+
+function animerCadeau() {
+  const giftBox = document.getElementById("gift-box");
+  giftBox.classList.add("open");
 }
 </script>
 </body>
